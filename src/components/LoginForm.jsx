@@ -1,8 +1,6 @@
 function LoginForm() {  
     return (
-      <div className="w-3/12 mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-center text-2xl font-bold mb-4">SOLTEC</h2>
-        <form className="w-full" >
+        <form className="w-full">
           <div className="mb-4">
             <label className="block text-gray-700">Correo electrónico:</label>
             <input
@@ -23,11 +21,10 @@ function LoginForm() {
               required
             />
           </div>
-          <button type="submit" className="bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:bg-indigo-600 hover:bg-indigo-600">
+          <button type="submit" className="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:bg-indigo-600 hover:bg-indigo-600">
             Ingresar
           </button>
         </form>
-      </div>
     );
 }
 
