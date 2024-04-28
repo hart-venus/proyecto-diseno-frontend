@@ -1,0 +1,53 @@
+---
+import ProfessorList from "../components/ProfessorList";
+
+
+const professors = [
+    {
+        nombre: "John Doe",
+        codigo: "JD123",
+        correo: "john@example.com",
+        telefonoOficina: "123-456-789",
+        celular: "987-654-321",
+        guiaPrincipal: true,
+    },
+    {
+        nombre: "Jane Smith",
+        codigo: "JS456",
+        correo: "jane@example.com",
+        telefonoOficina: "111-222-333",
+        celular: "444-555-666",
+        guiaPrincipal: false,
+    },
+    {
+        nombre: "Alice Johnson",
+        codigo: "AJ789",
+        correo: "alice@example.com",
+        telefonoOficina: "999-888-777",
+        celular: "666-777-888",
+        guiaPrincipal: true,
+    }
+];
+
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Profesores</title>
+</head>
+<body class="flex justify-center h-screen bg-slate-100">
+    <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-left text-3xl font-bold my-2">Gestion de Profesores</h1>
+        <button
+        class="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
+            Agregar
+        </button>
+
+        <ProfessorList professors={professors}/>
+
+    </div>
+</body>
+</html>
