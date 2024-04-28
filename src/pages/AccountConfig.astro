@@ -1,0 +1,98 @@
+---
+
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Config</title>
+</head>
+<body class="bg-slate-100 flex flex-col justify-center items-center p-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Configuración de cuenta y seguridad</h1>
+    <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4 items-center justify-center">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Datos Personales</h1>
+        <h1 class="text-gray-900 mb-4">Opciones para visualizar y editar información personal</h1>
+        <form action="", method="post", class="w-full">
+            <div class="mb-4">
+                <label class="block text-gray-700">Nombre:</label>
+                <input
+                  id="name"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
+                  value="Eduardo" 
+                  required
+                />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Apellidos:</label>
+                <input
+                  id="lname"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
+                  value="Gutiérrez"
+                  required
+                />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Correo electrónico:</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
+                  value = "eduardogutierrez@estudiantec.cr"
+                  required
+                />
+            </div>
+            <input type="submit" value="Guardar Cambios" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        </form>
+    </div>
+    <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Cambio de contraseña</h1>
+        <h1 class="text-gray-900 mb-4">Formulario para actualizar contraseña</h1>
+        <form action="", method="post", class="w-full">
+            <div class="mb-4">
+                <label class="block text-gray-700">Contraseña actual:</label>
+                <input
+                  id="name"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
+                  required
+                />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Nueva contraseña:</label>
+                <input
+                  id="lname"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                  required
+                />
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700">Confirmar nueva contraseña:</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
+                  required
+                />
+            </div>
+            <input type="submit" value="Cambiar contraseña" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        </form>
+    </div>
+    <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Registro de actividad</h1>
+        <h1 class="text-gray-900 mb-4">Log de accesos y cambios realizados en el sistema</h1>
+        <table class="table-auto w-full border border-gray-200">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 bg-gray-100 border border-gray-200">Fecha</th>
+                    <th class="px-4 py-2 bg-gray-100 border border-gray-200">Actividad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="px-4 py-2 border border-gray-200">01/04/2024 10:10 AM</td>
+                    <td class="px-4 py-2 border border-gray-200">Cambio contraseña</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
