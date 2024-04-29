@@ -1,6 +1,37 @@
 import React from "react";
 
-function ProfessorList({ professors }) {
+const professors = [
+    {
+        nombre: "John Doe",
+        codigo: "JD123",
+        correo: "john@example.com",
+        telefonoOficina: "123-456-789",
+        celular: "987-654-321",
+        guiaPrincipal: true,
+    },
+    {
+        nombre: "Jane Smith",
+        codigo: "JS456",
+        correo: "jane@example.com",
+        telefonoOficina: "111-222-333",
+        celular: "444-555-666",
+        guiaPrincipal: false,
+    },
+    {
+        nombre: "Alice Johnson",
+        codigo: "AJ789",
+        correo: "alice@example.com",
+        telefonoOficina: "999-888-777",
+        celular: "666-777-888",
+        guiaPrincipal: true,
+    }
+];
+
+function ProfessorList() {
+
+    const handleEdit = (prof) => {
+        window.location.href = `Professor?prof=${encodeURIComponent(prof.nombre)}`;
+    };
 
     return (
         <table className="mt-6 w-full table-auto border-collapse border border-slate-500 border-spacing-x-3">
@@ -18,7 +49,7 @@ function ProfessorList({ professors }) {
             <tbody>
                 {
                     professors.map((prof) => (
-                        <tr>
+                        <tr key={prof.nombre}>
                             <td className="border border-slate-700 p-2">{prof.nombre}</td>
                             <td className="border border-slate-700 p-2">{prof.codigo}</td>
                             <td className="border border-slate-700 p-2">{prof.correo}</td>
@@ -32,7 +63,7 @@ function ProfessorList({ professors }) {
                                 )}
                             </td>
                             <td className="border border-slate-700 p-2">
-                                <button className="size-auto mx-4 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-yellow-500 hover:bg-yellow-700">Editar</button>
+                                <button onClick={() => handleEdit(prof)} className="size-auto mx-4 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-yellow-500 hover:bg-yellow-700">Editar</button>
                                 <button className="size-auto text-white rounded-lg border-4 border-transparent font-bold p-1 bg-red-600 hover:bg-red-800">Baja</button>
                             </td>
                         </tr>
