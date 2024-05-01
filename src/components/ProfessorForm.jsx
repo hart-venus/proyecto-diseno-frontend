@@ -90,9 +90,10 @@ function ProfessorForm() {
                     <div className="mb-4">
                         <label className="block text-gray-700">Foto</label>
                         <input
-                            type="image"
+                            type="file"
                             id="imagen"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                            accept="image/*"
                         />
                     </div>
                     <button
@@ -146,9 +147,10 @@ function ProfessorForm() {
                     <div className="mb-4">
                         <label className="block text-gray-700">Foto</label>
                         <input
-                            type="image"
+                            type="file"
                             id="imagen"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                            accept="image/*"
                         />
                     </div>
                     <button

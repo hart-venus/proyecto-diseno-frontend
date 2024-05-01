@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
+import Messages from "./Messages";
 const activities = [
     {
         title: "Taller de Capacitacion",
@@ -66,12 +67,7 @@ function ActivityDetail(){
             <p className="text-left text-lg">Modalidad: {activity.mode}</p>
             <h1 className="text-left text-2xl font-bold mt-4">Foro de Comentarios</h1>
 
-            <p>Comentarios...</p>
-            
-            <button
-            className="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
-                Enviar
-            </button>
+            <Messages activity={activity.title}/>
 
         </div>
     )
