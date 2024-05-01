@@ -1,0 +1,143 @@
+---
+
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Account Config</title>
+    </head>
+    <body class="bg-slate-100 flex flex-col justify-center items-center p-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+            Plan de trabajo y actividades
+        </h1>
+        <div
+            class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4 items-center justify-center"
+        >
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                Calendario de actividades
+            </h1>
+            <h1 class="text-gray-900 mb-4">
+                Visualización por semanas con actividades planeadas
+            </h1>
+            <table class="table-auto w-full border border-gray-200">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 bg-gray-100 border border-gray-200"
+                            >Fecha</th
+                        >
+                        <th class="px-4 py-2 bg-gray-100 border border-gray-200"
+                            >Actividad</th
+                        >
+                        <th class="px-4 py-2 bg-gray-100 border border-gray-200"
+                            >Tipo</th
+                        >
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 py-2 border border-gray-200"
+                            >01/04/2024 10:10 AM</td
+                        >
+                        <td class="px-4 py-2 border border-gray-200"
+                            >Open Mic</td
+                        >
+                        <td class="px-4 py-2 border border-gray-200"
+                            >Recreativa</td
+                        >
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                Formulario para nueva actividad
+            </h1>
+            <form action="" , method="post" , class="w-full">
+                <div class="mb-4">
+                    <input
+                        id="week"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Semana"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <input
+                        id="actName"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Actividad"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <input
+                        id="responsible"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Responsable"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <input
+                        id="remainder"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Recordatorio"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <input
+                        id="link"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Enlace a reunión"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <input
+                        id="type"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Tipo de actividad"
+                        required
+                    />
+                </div>
+                <div class="mb-4">
+                    <input
+                        id="mode"
+                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Modalidad"
+                        required
+                    />
+                </div>
+                <div id="poster" class="mb-4">
+                    <label for="photoInput" class="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
+                        Subir poster
+                    </label>
+                    <input id="photoInput" type="file" accept="image/*" class="hidden">
+                </div>
+                <div class="justify-center mb-4">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                        Estado de actividad
+                    </h1>
+                    <button class="bg-green-500 hover:bg-green-600 text-white py-2 px-2 rounded mr-2">Planeada</button>
+                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-2 rounded mr-2">Notificada</button>
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded mr-2">Realizada</button>
+                    <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-2 rounded">Cancelada</button>
+                </div>
+                <div id="evidence" class="mb-4">
+                    <label for="photoInput" class="cursor-pointer px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700">
+                        Subir evidencia
+                    </label>
+                    <input id="photoInput" type="file" accept="image/*" class="hidden">
+                </div>
+                <input
+                    type="submit"
+                    value="Guardar"
+                    class="w-1/5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                />
+            </form>
+        </div>
+    </body>
+</html>
