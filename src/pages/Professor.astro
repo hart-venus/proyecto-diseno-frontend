@@ -1,5 +1,6 @@
 ---
 import ProfessorForm from "../components/ProfessorComponents/ProfessorForm"
+import AuthenticationChecker from "../components/Authentication" 
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +10,7 @@ import ProfessorForm from "../components/ProfessorComponents/ProfessorForm"
     <title>Professor Form</title>
 </head>
 <body>
-    <body class="flex justify-center items-center h-screen bg-slate-100">
+    <body class="flex justify-center items-center bg-slate-100">
         <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
             <h1 class="text-left text-3xl font-bold my-2">Formulario Detalles Profesor</h1>
             <ProfessorForm client:load/>
@@ -18,3 +19,5 @@ import ProfessorForm from "../components/ProfessorComponents/ProfessorForm"
     
 </body>
 </html>
+
+<AuthenticationChecker client:only="react"/>

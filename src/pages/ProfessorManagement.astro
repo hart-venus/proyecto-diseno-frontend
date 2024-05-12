@@ -1,5 +1,6 @@
 ---
 import ProfessorList from "../components/ProfessorComponents/ProfessorList";
+import AuthenticationChecker from "../components/Authentication" 
 ---
 
 <!doctype html>
@@ -43,3 +44,5 @@ import ProfessorList from "../components/ProfessorComponents/ProfessorList";
         window.location.href = "ControlPanel";
     });
 </script>
+
+<AuthenticationChecker client:only="react"/>

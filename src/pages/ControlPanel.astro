@@ -1,5 +1,6 @@
 ---
 import ControlPanelComponent from "../components/PanelControlComponents/ControlPanelComponent"
+import AuthenticationChecker from "../components/Authentication" 
 
 ---
 
@@ -14,3 +15,4 @@ import ControlPanelComponent from "../components/PanelControlComponents/ControlP
         <ControlPanelComponent client:load/>
     </body>
 </html>
+<AuthenticationChecker client:only="react"/>
