@@ -1,73 +1,67 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import Messages from "./Messages";
-const activities = [
-    {
-        title: "Taller de Capacitacion",
-        location: "Convention Center",
-        name: "Science Conference 2024",
-        type: "Conference",
-        date: "2024-05-10",
-        mode: "In-person",
-        planned: true
-    },
-    {
-        title: "Reunion de Coordinacion",
-        location: "Photography Studio",
-        name: "Creative Photography Workshop",
-        type: "Workshop",
-        date: "2024-06-15",
-        mode: "Virtual",
-        planned: true
-    },
-    {
-        title: "Evaluacion de Proyectos",
-        location: "Municipal Theater",
-        name: "Live Jazz Night",
-        type: "Concert",
-        date: "2024-07-20",
-        mode: "In-person",
-        planned: false
-    },
-];
+import { API_URL } from "../constants";
+import axios from "axios";
 
 
-function ActivityDetail(){
+function ActivityDetail() {
 
-    const [planeada, setPlaneada] = useState('No Planeada');
-    const [activity, setActivity] = useState(null);
+    const [planeada, setPlaneada] = useState(false);
+    const [id, setId] = useState(null);
+    const [activity, setActivity] = useState(null)
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const urlParams = new URLSearchParams(window.location.search);
-            const title = urlParams.get('title');
-            const foundActivity = activities.find(act => act.title === title);
+            const newId = urlParams.get('id');
 
-            // Verificar si se encontró la actividad
-            if (foundActivity) {
-                setActivity(foundActivity);
-                setPlaneada(foundActivity.planned ? 'Planeada' : 'No Planeada');
-            }
+            setId(newId)
         }
-    }, []); // <- Array vacío para que el useEffect se ejecute solo una vez
+    }, []);
+
+    //Efecto para cargar info de la actividad
+    useEffect(() => {
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `${API_URL}/activities/${id}`,
+            headers: {}
+        };
+
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                const newActivity = response.data
+                setActivity(newActivity)
+
+                if(newActivity.status == "PLANEADA"){
+                    setPlaneada(true)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [id])
 
     if (!activity) {
         return <div className="text-left text-lg">Cargando...</div>;
     }
 
-    return(
+    return (
         <div>
-            <span className={`rounded-lg border-4 border-transparent font-bold p-1 ${
-                activity.planned ? `bg-green-500` : `bg-red-600`
-            }`}>{planeada}</span>
 
-            <h1 className="text-left text-2xl font-bold mt-4">{activity.title}</h1>
-            <p className="text-left text-lg">Tipo: {activity.type}</p>
-            <p className="text-left text-lg">Fecha: {activity.date}</p>
-            <p className="text-left text-lg">Modalidad: {activity.mode}</p>
+            <span className={`rounded-lg border-4 border-transparent font-bold p-1 ${planeada ? `bg-green-500` : `bg-red-600`
+                }`}>{activity.status}
+            </span>
+
+            <h1 className="text-left text-2xl font-bold mt-4">{activity.name}</h1>
+            <p className="text-left text-lg">Descripcion: {activity.description}</p>
+            <p className="text-left text-lg">Fecha: {activity.date_time}</p>
+            <p className="text-left text-lg">Localizacion: {activity.location}</p>
             <h1 className="text-left text-2xl font-bold mt-4">Foro de Comentarios</h1>
 
-            <Messages activity={activity.title}/>
+            <Messages activity={activity.title} />
 
         </div>
     )

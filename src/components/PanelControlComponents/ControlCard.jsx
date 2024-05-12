@@ -1,11 +1,9 @@
 
-import React from 'react';
-
-function ControlCard({ title, description, interactive}) {
+function ControlCard({ title, description, interactive, id}) {
 
     const handleClick = () => {
         if(interactive){
-            window.location.href = `EventDetail?title=${encodeURIComponent(title)}`;
+            window.location.href = `EventDetail?id=${encodeURIComponent(id)}`;
         }
     }
 

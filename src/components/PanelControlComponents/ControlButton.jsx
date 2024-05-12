@@ -3,6 +3,10 @@ function ControlButton({title}) {
     const handleClick = () => {
         if (title == 'Profesores') {
             window.location.href = 'ProfessorManagement'
+        }else if(title == 'Modificar Cuenta'){
+            window.location.href = 'AccountConfig'
+        }else if(title == 'Plan de Trabajo'){
+            window.location.href = 'Planning'
         }
     }
 

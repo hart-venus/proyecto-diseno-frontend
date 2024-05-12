@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { API_URL } from "../constants";
+import { API_URL } from "../../constants";
 
 function ProfessorList() {
 
-    const [professors,setProfessors] = useState(null)
+    const [professors, setProfessors] = useState(null)
 
     const handleEdit = (prof) => {
         window.location.href = `Professor?prof=${encodeURIComponent(prof.full_name)}`;
@@ -37,6 +37,7 @@ function ProfessorList() {
                     <th className="border border-slate-600">Telefono Oficina</th>
                     <th className="border border-slate-600">Celular</th>
                     <th className="border border-slate-600">Guia Principal</th>
+                    <th className="border border-slate-600">Activo</th>
                     <th className="border border-slate-600">Opciones</th>
                 </tr>
             </thead>
@@ -53,6 +54,14 @@ function ProfessorList() {
                                 {prof.coordinator ? (
                                     <span className="text-xl" style={{ color: 'green' }}>Si</span> // Checkmark
                                 ) : (
+                                    <span className="text-xl" style={{ color: 'red' }}>No</span> // Cross
+                                )}
+                            </td>
+                            <td className="border border-slate-700 p-2">
+                                {prof.status === 'active' && (
+                                    <span className="text-xl" style={{ color: 'green' }}>Si</span> // Checkmark
+                                )}
+                                {prof.status !== 'active' && (
                                     <span className="text-xl" style={{ color: 'red' }}>No</span> // Cross
                                 )}
                             </td>

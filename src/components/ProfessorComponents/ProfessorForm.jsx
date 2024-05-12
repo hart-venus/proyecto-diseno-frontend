@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { API_URL } from "../constants";
+import { API_URL } from "../../constants";
 import FormData from "form-data";
 
 function ProfessorForm() {
