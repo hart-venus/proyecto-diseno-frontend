@@ -1,5 +1,6 @@
 ---
-
+import PersonalForm from "../components/AccountConfigPersonalForm";
+import PasswordForm from "../components/AccountConfigPasswordForm";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -12,69 +13,12 @@
     <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4 items-center justify-center">
         <h1 class="text-3xl font-bold text-gray-900 mb-4">Datos personales</h1>
         <h1 class="text-gray-900 mb-4">Opciones para visualizar y editar información personal</h1>
-        <form action="", method="post", class="w-full">
-            <div class="mb-4">
-                <label class="block text-gray-700">Nombre:</label>
-                <input
-                  id="name"
-                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
-                  value="Eduardo" 
-                  required
-                />
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Apellidos:</label>
-                <input
-                  id="lname"
-                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
-                  value="Gutiérrez"
-                  required
-                />
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Correo electrónico:</label>
-                <input
-                  type="email"
-                  id="email"
-                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
-                  value = "eduardogutierrez@estudiantec.cr"
-                  required
-                />
-            </div>
-            <input type="submit" value="Guardar Cambios" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        </form>
+        <PersonalForm client:load/>
     </div>
     <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
         <h1 class="text-3xl font-bold text-gray-900 mb-4">Cambio de contraseña</h1>
         <h1 class="text-gray-900 mb-4">Formulario para actualizar contraseña</h1>
-        <form action="", method="post", class="w-full">
-            <div class="mb-4">
-                <label class="block text-gray-700">Contraseña actual:</label>
-                <input
-                  id="name"
-                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
-                  required
-                />
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Nueva contraseña:</label>
-                <input
-                  id="lname"
-                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                  required
-                />
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700">Confirmar nueva contraseña:</label>
-                <input
-                  type="email"
-                  id="email"
-                  class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500" 
-                  required
-                />
-            </div>
-            <input type="submit" value="Cambiar contraseña" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        </form>
+        <PasswordForm client:load/>
     </div>
     <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
         <h1 class="text-3xl font-bold text-gray-900 mb-4">Registro de actividad</h1>

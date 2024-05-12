@@ -54,7 +54,7 @@ function ControlPanelComponent() {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `${API_URL}/professors/search?query=true`,
+            url: `${API_URL}/professors/search?query=active`,
             headers: {}
         };
 
@@ -99,13 +99,15 @@ function ControlPanelComponent() {
             <div className="grid grid-cols-3 gap-4">
                 {
                     guideTeam && guideTeam.map((member, index) => (
-                        <ControlCard
-                            key={index}
-                            client:load
-                            title={member.full_name}
-                            description={"Coordinador"}
-                            interactive={false}
-                        />
+                        member.status == "active" && (
+                            <ControlCard
+                                key={index}
+                                client:load
+                                title={member.full_name}
+                                description={member.coordinator ? "Coordinador" : "Profesor Guía"}
+                                interactive={false}
+                            />
+                        )
                     ))
                 }
             </div>
