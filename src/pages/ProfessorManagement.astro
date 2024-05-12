@@ -1,28 +1,35 @@
 ---
 import ProfessorList from "../components/ProfessorList";
-
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Profesores</title>
-</head>
-<body class="flex justify-center h-screen bg-slate-100">
-    <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
-        <h1 class="text-left text-3xl font-bold my-2">Gestion de Profesores</h1>
-        <button
-        id="add"
-        class="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
-            Agregar
-        </button>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Gestion de Profesores</title>
+    </head>
+    <body class="flex justify-center h-screen bg-slate-100">
+        <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
+            <h1 class="text-left text-3xl font-bold my-2">
+                Gestion de Profesores
+            </h1>
+            <button
+                id="add"
+                class="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700"
+            >
+                Agregar
+            </button>
+            <button
+                id="return"
+                class="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-red-500 hover:bg-red-700"
+            >
+                Regresar
+            </button>
 
-        <ProfessorList client:load/>
-
-    </div>
-</body>
+            <ProfessorList client:load />
+        </div>
+    </body>
 </html>
 
 <script>
@@ -30,4 +37,9 @@ import ProfessorList from "../components/ProfessorList";
     add?.addEventListener("click", () => {
         window.location.href = "Professor";
     });
-  </script>
+
+    const returnButton = document.querySelector("#return");
+    returnButton?.addEventListener("click", () => {
+        window.location.href = "ControlPanel";
+    });
+</script>

@@ -1,50 +1,87 @@
 import { useState, useEffect } from "react";
-
-const professors = [
-    {
-        nombre: "John Doe",
-        codigo: "JD123",
-        correo: "john@example.com",
-        telefonoOficina: "123-456-789",
-        celular: "987-654-321",
-        guiaPrincipal: true,
-    },
-    {
-        nombre: "Jane Smith",
-        codigo: "JS456",
-        correo: "jane@example.com",
-        telefonoOficina: "111-222-333",
-        celular: "444-555-666",
-        guiaPrincipal: false,
-    },
-    {
-        nombre: "Alice Johnson",
-        codigo: "AJ789",
-        correo: "alice@example.com",
-        telefonoOficina: "999-888-777",
-        celular: "666-777-888",
-        guiaPrincipal: true,
-    }
-];
-
+import axios from "axios";
+import { API_URL } from "../constants";
+import FormData from "form-data";
 
 function ProfessorForm() {
 
     const [professor, setProfessor] = useState(null);
+    const [profName, setProfName] = useState(null);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        office_phone: '',
+        cellphone: '',
+        status: '',
+        campus: ''
+    });
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const urlParams = new URLSearchParams(window.location.search);
-            const profName = urlParams.get('prof');
+            const newProfName = urlParams.get('prof');
 
-            if (profName) {
-                const foundProfessor = professors.find(prof => prof.nombre === profName);
-                if (foundProfessor) {
-                    setProfessor(foundProfessor);
-                }
+            if (newProfName) {
+                setProfName(newProfName);
             }
         }
     }, []);
+
+    useEffect(() => {
+        if (!profName) return
+
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `${API_URL}/professors/search?query=${profName}`,
+            headers: {}
+        };
+
+        axios.request(config)
+            .then((response) => {
+                const newProfessor = response.data[0];
+                setProfessor(newProfessor)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }, [profName])
+
+    const handleAddProfessor = (e) => {
+
+        e.preventDefault();
+
+        const data = new FormData();
+        data.append('full_name', formData.name);
+        data.append('email', formData.email);
+        data.append('office_phone', formData.office_phone);
+        data.append('cellphone', formData.cellphone);
+        if(formData.status == 'Activo'){
+           data.append('Status', true); 
+        }else{data.append('Status', false);}
+
+        data.append('campus', formData.campus);
+
+        const requestOptions = {
+            method: "POST",
+            body: data,
+            redirect: "follow"
+          };
+          
+          fetch(`${API_URL}/professors`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => {console.log(result); window.location.href = 'ProfessorManagement'})
+            .catch((error) => console.error(error));
+    }
+
+    const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setFormData({
+            ...formData,
+            [id]: value
+        });
+    }
 
     return (
         <div>
@@ -57,7 +94,7 @@ function ProfessorForm() {
                             type="text"
                             id="name"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.nombre}
+                            placeholder={professor.full_name}
                         />
                     </div>
                     <div className="mb-4">
@@ -66,7 +103,7 @@ function ProfessorForm() {
                             type="email"
                             id="email"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.correo}
+                            placeholder={professor.email}
                         />
                     </div>
                     <div className="mb-4">
@@ -75,7 +112,7 @@ function ProfessorForm() {
                             type="tel"
                             id="Oficina"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.telefonoOficina}
+                            placeholder={professor.office_phone}
                         />
                     </div>
                     <div className="mb-4">
@@ -84,7 +121,7 @@ function ProfessorForm() {
                             type="tel"
                             id="Celular"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.celular}
+                            placeholder={professor.cellphone}
                         />
                     </div>
                     <div className="mb-4">
@@ -103,12 +140,14 @@ function ProfessorForm() {
                 </form>
             ) : (
                 // Renderizar para agregar un profesor
-                <form className="w-3/4">
+                <form className="w-3/4" onSubmit={handleAddProfessor}>
                     <div className="mb-4">
                         <label className="block text-gray-700">Nombre Completo</label>
                         <input
                             type="text"
                             id="name"
+                            value={formData.name}
+                            onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder="Ingrese Nombre Completo"
                             required
@@ -119,6 +158,8 @@ function ProfessorForm() {
                         <input
                             type="email"
                             id="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder="Ingrese Correo"
                             required
@@ -128,7 +169,9 @@ function ProfessorForm() {
                         <label className="block text-gray-700">Telefono Oficina</label>
                         <input
                             type="tel"
-                            id="Oficina"
+                            id="office_phone"
+                            value={formData.office_phone}
+                            onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder="Ingrese Telefono de Oficina"
                             required
@@ -138,9 +181,35 @@ function ProfessorForm() {
                         <label className="block text-gray-700">Celular</label>
                         <input
                             type="tel"
-                            id="Celular"
+                            id="cellphone"
+                            value={formData.cellphone}
+                            onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder="Ingrese Celular"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Status</label>
+                        <input
+                            type="text"
+                            id="status"
+                            value={formData.status}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                            placeholder="Activo/Desactivo"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Campus</label>
+                        <input
+                            type="text"
+                            id="campus"
+                            value={formData.campus}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                            placeholder="Campus"
                             required
                         />
                     </div>

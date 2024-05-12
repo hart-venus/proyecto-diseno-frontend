@@ -1,27 +1,9 @@
 ---
-import ControlCard from "../components/ControlCard";
-import ControlButton from "../components/ControlButton";
+import ControlPanelComponent from "../components/ControlPanelComponent";
 
-const guideTeam = [
-    { title: "Juan Perez", description: "Coordinador" },
-    { title: "Maria Lopez", description: "Asesor Pedagogico" },
-    { title: "Carlos Gomez", description: "Facilitador Tecnico" },
-];
-
-const activities = [
-    { title: "Reunion de Coordinacion", description: "10/05/2023" },
-    { title: "Taller de Capacitacion", description: "15/05/2023" },
-    { title: "Evaluacion de Proyectos", description: "20/05/2023" },
-];
-
-const modules = [
-    { title: "Estudiantes" },
-    { title: "Profesores" },
-    { title: "Plan de Trabajo" },
-];
 ---
 
-<!doctype html> 
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -29,52 +11,6 @@ const modules = [
         <title>Panel de Control</title>
     </head>
     <body class="flex justify-center items-center h-screen bg-slate-100">
-        <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-left text-3xl font-bold my-4">Panel de Control</h1>
-            <p class="text-left text-2xl font-bold my-4">
-                Resumen del Equipo Guia
-            </p>
-            <div class="grid grid-cols-3 gap-4">
-                {
-                    guideTeam.map((member) => (
-                        <ControlCard
-                            client:load
-                            title={member.title}
-                            description={member.description}
-                            interactive={false}
-                        />
-                    ))
-                }
-            </div>
-
-            <p class="text-left text-lg font-bold my-4">
-                Navegacion a Modulos Especificos
-            </p>
-
-            <div class="grid grid-cols-6 gap-4">
-                {
-                    modules.map((module) => (
-                        <ControlButton client:load title={module.title} />
-                    ))
-                }
-            </div>
-
-            <p class="text-left text-lg font-bold my-4">
-                Vista de Actividades Programadas
-            </p>
-
-            <div class="grid grid-cols-3 gap-4">
-                {
-                    activities.map((activity) => (
-                        <ControlCard
-                            client:load
-                            title={activity.title}
-                            description={activity.description}
-                            interactive={true}
-                        />
-                    ))
-                }
-            </div>
-        </div>
+        <ControlPanelComponent client:load/>
     </body>
 </html>

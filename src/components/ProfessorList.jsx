@@ -1,37 +1,31 @@
-import React from "react";
-
-const professors = [
-    {
-        nombre: "John Doe",
-        codigo: "JD123",
-        correo: "john@example.com",
-        telefonoOficina: "123-456-789",
-        celular: "987-654-321",
-        guiaPrincipal: true,
-    },
-    {
-        nombre: "Jane Smith",
-        codigo: "JS456",
-        correo: "jane@example.com",
-        telefonoOficina: "111-222-333",
-        celular: "444-555-666",
-        guiaPrincipal: false,
-    },
-    {
-        nombre: "Alice Johnson",
-        codigo: "AJ789",
-        correo: "alice@example.com",
-        telefonoOficina: "999-888-777",
-        celular: "666-777-888",
-        guiaPrincipal: true,
-    }
-];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { API_URL } from "../constants";
 
 function ProfessorList() {
 
+    const [professors,setProfessors] = useState(null)
+
     const handleEdit = (prof) => {
-        window.location.href = `Professor?prof=${encodeURIComponent(prof.nombre)}`;
+        window.location.href = `Professor?prof=${encodeURIComponent(prof.full_name)}`;
     };
+
+    useEffect(() => {
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `${API_URL}/professors/search?query=`,
+            headers: {}
+        };
+
+        axios.request(config)
+            .then((response) => {
+                setProfessors(response.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [])
 
     return (
         <table className="mt-6 w-full table-auto border-collapse border border-slate-500 border-spacing-x-3">
@@ -48,15 +42,15 @@ function ProfessorList() {
             </thead>
             <tbody>
                 {
-                    professors.map((prof) => (
+                    professors && professors.map((prof) => (
                         <tr key={prof.nombre}>
-                            <td className="border border-slate-700 p-2">{prof.nombre}</td>
-                            <td className="border border-slate-700 p-2">{prof.codigo}</td>
-                            <td className="border border-slate-700 p-2">{prof.correo}</td>
-                            <td className="border border-slate-700 p-2">{prof.telefonoOficina}</td>
-                            <td className="border border-slate-700 p-2">{prof.celular}</td>
+                            <td className="border border-slate-700 p-2">{prof.full_name}</td>
+                            <td className="border border-slate-700 p-2">{prof.code}</td>
+                            <td className="border border-slate-700 p-2">{prof.email}</td>
+                            <td className="border border-slate-700 p-2">{prof.office_phone}</td>
+                            <td className="border border-slate-700 p-2">{prof.cellphone}</td>
                             <td className="border border-slate-700 p-2">
-                                {prof.guiaPrincipal ? (
+                                {prof.coordinator ? (
                                     <span className="text-xl" style={{ color: 'green' }}>Si</span> // Checkmark
                                 ) : (
                                     <span className="text-xl" style={{ color: 'red' }}>No</span> // Cross
