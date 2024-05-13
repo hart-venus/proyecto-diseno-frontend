@@ -8,6 +8,8 @@ function StudentInfo() {
   const [filterOption, setFilterOption] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResult, setSearchResult] = useState([]);
+  const [selectedCampus, setSelectedCampus] = useState('Todos');
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const fetchStudentData = async () => {
@@ -31,16 +33,65 @@ function StudentInfo() {
     setSearchTerm(event.target.value);
   };
 
-  const handleViewDetails = (studentId) => {
-    // Lógica para ver detalles del estudiante
+  const handleViewDetails = (studentId, studentCampus) => {
+    if (window.sessionStorage.getItem('USER_CAMPUS') === studentCampus) {
+      console.log('Ver detalles del estudiante ID:', studentId);
+    } else {
+      console.log('No tiene los permisos para ver el estudiante.');
+    }
   };
 
-  const handleImportExcel = () => {
-    // Lógica para importar datos desde Excel
+  const handleImportExcel = async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+
+    input.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      const formData = new FormData();
+
+      formData.append('file', file);
+      formData.append('admin_id', window.sessionStorage.getItem('USER_ID'));
+
+      try {
+        const response = await axios.post(`${API_URL}/students/upload`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Respuesta del servidor:', response.data);
+        alert('Archivo cargado exitosamente.');
+      } catch (error) {
+        console.error('Error al cargar el archivo:', error);
+        alert('Error al cargar el archivo. Por favor, inténtelo de nuevo.');
+      }
+    });
+
+    input.click();
   };
 
-  const handleExportExcel = () => {
-    // Lógica para exportar datos a Excel
+  const handleExportExcel = async () => {
+    let exportEndpoint = `${API_URL}/students/export`;
+    setShowDropdown(false);
+    if (selectedCampus !== 'Todos') {
+      exportEndpoint += `?campus=${selectedCampus}`;
+    }
+
+    try {
+      const response = await axios.get(exportEndpoint, {
+        responseType: 'blob',
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'estudiantes.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error al exportar datos a Excel:', error);
+      alert('Error al exportar datos a Excel. Por favor, inténtelo de nuevo.');
+    }
   };
 
   return (
@@ -97,8 +148,10 @@ function StudentInfo() {
               <td className="px-4 py-2 border">{student.phone}</td>
               <td className="px-4 py-2 border">{student.campus}</td>
               <td className="px-4 py-2 border">
-                <button onClick={() => handleViewDetails(student.id)}
-                className='border rounded-md bg-green-500 text-white'>Ver Detalles</button>
+                {window.sessionStorage.getItem('USER_CAMPUS') === student.campus && (
+                  <button onClick={() => handleViewDetails(student.id, student.campus)}
+                  className='border rounded-md bg-green-500 text-white'>Ver Detalles</button>
+                )}
               </td>
             </tr>
           ))}
@@ -112,11 +165,27 @@ function StudentInfo() {
           Importar Excel
         </button>
         <button
-          onClick={handleExportExcel}
+          onClick={() => setShowDropdown(true)}
           className="px-2 py-1 border rounded-md bg-blue-500 text-white mx-4"
         >
           Exportar Excel
         </button>
+        {/* Popup con dropdown para seleccionar el campus */}
+        {showDropdown && (
+          <div className="popup">
+            <select value={selectedCampus} onChange={(e) => setSelectedCampus(e.target.value)}>
+              <option value="Todos">Todos</option>
+              <option value="CA">CA</option>
+              <option value="SJ">SJ</option>
+              <option value="LI">LI</option>
+              <option value="SC">SC</option>
+              <option value="AL">AL</option>
+            </select>
+            <button onClick={handleExportExcel} className="px-2 py-1 border rounded-md bg-blue-500 text-white mx-4">
+              Confirmar y Exportar
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
