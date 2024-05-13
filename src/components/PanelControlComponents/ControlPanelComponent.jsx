@@ -54,7 +54,7 @@ function ControlPanelComponent() {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `${API_URL}/professors/search?query=active`,
+            url: `${API_URL}/professors/search?query=`,
             headers: {}
         };
 
@@ -80,7 +80,6 @@ function ControlPanelComponent() {
           
           axios.request(config)
           .then((response) => {
-            console.log(response.data)
             const newActivities = response.data;
             setActivities(newActivities);
           })

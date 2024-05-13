@@ -7,6 +7,8 @@ function ControlButton({title}) {
             window.location.href = 'AccountConfig'
         }else if(title == 'Plan de Trabajo'){
             window.location.href = 'Planning'
+        }else if(title == 'Estudiantes'){
+            window.location.href = 'StudentList'
         }
     }
 
