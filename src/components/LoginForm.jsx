@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState} from 'react';
 import axios from 'axios';
 import { API_URL } from '../constants';
 
@@ -39,20 +39,16 @@ function LoginForm() {
 
     axios.request(config)
       .then((response) => {
-        const userId = JSON.stringify(response.data.user_id);
-
-        window.localStorage.setItem('USER_ID', userId); //Guardar en local storage el id del usuario
-
+        const userId = response.data.user_id
+        window.sessionStorage.setItem('USER_ID', userId); //Guardar en local storage el id del usuario
         window.location.href = 'ControlPanel'; //Navegar a la nueva ventana
-
+        fetchPersonalData();
       })
       .catch((error) => {
         const newError = JSON.stringify(error.response.data.error);
         setError(newError)
       });
-
-
-  };
+  }
 
   return (
 

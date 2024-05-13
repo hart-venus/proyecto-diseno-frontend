@@ -34,7 +34,7 @@ function PasswordForm() {
   
     try {
       // Check if current password is correct
-      const userId = window.localStorage.getItem("USER_ID").replace(/"/g, '');;
+      const userId = window.sessionStorage.getItem("USER_ID").replace(/"/g, '');;
   
       // Proceed with updating the password
       const updateResponse = await axios.put(

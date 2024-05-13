@@ -13,7 +13,7 @@ function PersonalForm() {
   useEffect(() => {
     const fetchPersonalData = async () => {
       try {
-        const userId = window.localStorage.getItem("USER_ID").replace(/"/g, '');;
+        const userId = window.sessionStorage.getItem("USER_ID").replace(/"/g, '');;
         // Fetch personal data using GET endpoint
         const response = await axios.get(`${API_URL}/users/${userId}`);
         const personalData = response.data;
@@ -47,7 +47,7 @@ function PersonalForm() {
 
     try {
       // Send PUT request to update personal data
-      const userId = window.localStorage.getItem("USER_ID").replace(/"/g, '');;
+      const userId = window.sessionStorage.getItem("USER_ID").replace(/"/g, '');;
       const response = await axios.put(
         `${API_URL}/users/${userId}`,
         { 

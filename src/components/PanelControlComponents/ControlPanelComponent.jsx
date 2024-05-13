@@ -15,8 +15,8 @@ import { API_URL } from "../../constants";
 const modules = [
     { title: "Modificar Cuenta" },
     { title: "Estudiantes" },
-    { title: "Profesores" },
-    { title: "Plan de Trabajo" }
+    { title: "Plan de Trabajo" },
+    { title: "Profesores" }
 ];
 
 function ControlPanelComponent() {
@@ -25,11 +25,10 @@ function ControlPanelComponent() {
     const [activities, setActivities] = useState([])
     const [role, setRole] = useState('')
 
-
     //Use Effect para obtener rol del usuario y saber que renderizar
     useEffect(() => {
 
-        const userId = window.localStorage.getItem('USER_ID').replace(/"/g, '')
+        const userId = window.sessionStorage.getItem('USER_ID').replace(/"/g, '')
 
         let config = {
             method: 'get',
@@ -41,20 +40,45 @@ function ControlPanelComponent() {
         axios.request(config)
             .then((response) => {
                 const newRole = response.data.role
-                window.localStorage.setItem('role', newRole)
+                const newCampus = response.data.campus
+                window.sessionStorage.setItem('USER_ROLE', newRole)
+                window.sessionStorage.setItem('USER_CAMPUS', newCampus)
                 setRole(newRole)
+                console.log(role)
             })
             .catch((error) => {
                 console.log(error.response);
             });
     }, [])
 
-    //Use effect para obtener profesores coordinadores que son los principales que se mostraran
+    //Use Effect para ver si el usuario es profesor coordinador
+    useEffect(() => {
+
+        const userId = window.sessionStorage.getItem('USER_ID')
+    
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `${API_URL}/professors/search?query=${userId}`,
+        };
+    
+        axios.request(config)
+            .then((response) => {
+                console.log(response.data[0].coordinator)
+                if (response.data[0].coordinator === true){
+                    window.sessionStorage.setItem('USER_ROLE', 'coord')
+                    setRole('coord')
+                    console.log(role)
+                }
+            })
+    }, [])
+
+    //Use effect para obtener profesores guía y coordinadores que son los principales que se mostraran
     useEffect(() => {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `${API_URL}/professors/search?query=active`,
+            url: `${API_URL}/professors/search?query=`,
             headers: {}
         };
 
@@ -119,9 +143,7 @@ function ControlPanelComponent() {
             <div className="grid grid-cols-6 gap-4">
                 {
                     modules.map((module, index) => (
-                        (role != "admin" && index >= 2) ? null : (
-                            <ControlButton key={index} client:load title={module.title} />
-                        )
+                        <ControlButton key={index} client:load title={module.title} role={role} />
                     ))
                 }
             </div>
