@@ -36,6 +36,12 @@ function StudentInfo() {
   const handleViewDetails = (studentId, studentCampus) => {
     if (window.sessionStorage.getItem('USER_CAMPUS') === studentCampus) {
       console.log('Ver detalles del estudiante ID:', studentId);
+      // Encode the data into URL parameters
+      const params = new URLSearchParams();
+      params.append('id', studentId);
+      params.append('campus', studentCampus);
+      // Redirect to the new page with encoded data
+      window.location.href = `/StudentDetail?${params.toString()}`;
     } else {
       console.log('No tiene los permisos para ver el estudiante.');
     }
@@ -149,7 +155,7 @@ function StudentInfo() {
               <td className="px-4 py-2 border">{student.campus}</td>
               <td className="px-4 py-2 border">
                 {window.sessionStorage.getItem('USER_CAMPUS') === student.campus && (
-                  <button onClick={() => handleViewDetails(student.id, student.campus)}
+                  <button onClick={() => handleViewDetails(student.carne, student.campus)}
                   className='border rounded-md bg-green-500 text-white'>Ver Detalles</button>
                 )}
               </td>
