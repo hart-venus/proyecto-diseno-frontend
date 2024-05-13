@@ -5,7 +5,7 @@ function AuthenticationChecker() {
     useEffect(() => {
         // Check if loggedIn
         try {
-            const value = window.localStorage.getItem("USER_ID");
+            const value = window.sessionStorage.getItem("USER_ID");
             if (value === null) {
                 window.location.href = '/login';
             }
