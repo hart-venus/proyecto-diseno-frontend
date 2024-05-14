@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_URL } from "../../constants";
 import axios from "axios";
+import ReturnButton from "../ReturnButton";
 
 function PlanDetails() {
     const [planeada, setPlaneada] = useState(false);
@@ -25,8 +26,8 @@ function PlanDetails() {
         if (typeof window !== 'undefined') {
             const urlParams = new URLSearchParams(window.location.search);
             const newId = urlParams.get('id');
-
             setId(newId)
+            window.sessionStorage.setItem('PLAN_ID',newId)
         }
     }, []);
 
@@ -99,6 +100,9 @@ function PlanDetails() {
                 >
                     Nueva Actividad
                 </button>
+            </div>
+            <div className="text-center mt-4">
+                <ReturnButton title={'Regresar'} page={'ControlPanel'} client:load/>
             </div>
         </div>
     )

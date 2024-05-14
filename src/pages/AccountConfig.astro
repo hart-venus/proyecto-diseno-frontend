@@ -1,7 +1,8 @@
 ---
-import PersonalForm from "../components/AccountConfigPersonalForm";
-import PasswordForm from "../components/AccountConfigPasswordForm";
+import PersonalForm from "../components/AccountRelated/AccountConfigPersonalForm";
+import PasswordForm from "../components/AccountRelated/AccountConfigPasswordForm";
 import AuthenticationChecker from "../components/Authentication" 
+import ReturnButton from "../components/ReturnButton";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +22,7 @@ import AuthenticationChecker from "../components/Authentication"
         <h1 class="text-gray-900 mb-4">Formulario para actualizar contraseña</h1>
         <PasswordForm client:load/>
     </div>
+    <ReturnButton title={'Regresar'} page={'ControlPanel'} client:load/>
 </body>
 </html>
 <AuthenticationChecker client:only="react"/>

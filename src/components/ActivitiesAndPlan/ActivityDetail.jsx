@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import Messages from "./Messages";
-import { API_URL } from "../constants";
+import { API_URL } from "../../constants";
 import axios from "axios";
+import ReturnButton from "../ReturnButton";
 
 
 function ActivityDetail() {
@@ -71,6 +72,8 @@ function ActivityDetail() {
                 </span>
 
             }
+
+            <ReturnButton title={'Regresar'} page={`PlanActivities?id=${window.sessionStorage.getItem('PLAN_ID')}`} client:load />
 
             {/* <h1 className="text-left text-2xl font-bold mt-4">Foro de Comentarios</h1>
 

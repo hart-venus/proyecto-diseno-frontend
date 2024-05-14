@@ -1,5 +1,6 @@
 ---
-import AddPlanComponent from "../components/AddPlanComponent";
+import AddPlanComponent from "../components/ActivitiesAndPlan/AddPlanComponent";
+import ReturnButton from "../components/ReturnButton";
 ---
 
 <!doctype html>
@@ -13,6 +14,7 @@ import AddPlanComponent from "../components/AddPlanComponent";
         ><div class="w-1/2 bg-white rounded-lg shadow-md p-6">
             <h2 class="text-center text-2xl font-bold mb-4">Agregar Plan</h2>
             <AddPlanComponent client:load />
+            <ReturnButton title={'Regresar'} page={'ControlPanel'} client:load>
         </div>
     </body>
 </html>

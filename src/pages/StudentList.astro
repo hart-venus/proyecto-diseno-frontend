@@ -1,23 +1,34 @@
 ---
-import StudentInfo from "../components/StudentTable"
-import AuthenticationChecker from "../components/Authentication" 
+import StudentInfo from "../components/Students/StudentTable";
+import AuthenticationChecker from "../components/Authentication";
+import ReturnButton from "../components/ReturnButton";
 ---
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student List</title>
-</head>
-<body>
-    <body class="flex justify-center items-center bg-slate-100">
-        <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-left text-3xl font-bold my-2">Estudiantes de primer ingreso</h1>
-            <StudentInfo client:only="react"/>
-        </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Student List</title>
+    </head>
+    <body>
+        <body class="flex justify-center items-center bg-slate-100">
+            <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
+                <div class="flex place-content-between">
+                    <h1 class="text-left text-3xl font-bold my-2">
+                        Estudiantes de primer ingreso
+                    </h1>
+                    <ReturnButton
+                        title={"Regresar"}
+                        page={"ControlPanel"}
+                        client:load
+                    />
+                </div>
+
+                <StudentInfo client:only="react" />
+            </div>
+        </body>
     </body>
-    
-</body>
 </html>
 
-<AuthenticationChecker client:only="react"/>
+<AuthenticationChecker client:only="react" />

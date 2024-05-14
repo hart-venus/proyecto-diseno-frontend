@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import FormData from "form-data";
+import ReturnButton from "../ReturnButton";
 
 function ProfessorForm() {
 
@@ -202,9 +203,10 @@ function ProfessorForm() {
                         />
                     </div>
                     <button
-                        className="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
+                        className="text-white mx-4 w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
                         Editar
                     </button>
+                    <ReturnButton title={'Regresar'} page={'ProfessorManagement'} client:load />
                 </form>
             ) : (
                 // Renderizar para agregar un profesor
@@ -270,9 +272,10 @@ function ProfessorForm() {
                     </div>
                     <button
                         type="submit"
-                        className="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
+                        className="text-white mx-4 w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
                         Agregar
                     </button>
+                    <ReturnButton title={'Regresar'} page={'ProfessorManagement'} client:load />
                 </form>
             )}
         </div>
