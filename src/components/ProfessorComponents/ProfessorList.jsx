@@ -45,8 +45,7 @@ function ProfessorList() {
         fetch(`${API_URL}/professors/${prof.code}/toggle_coordinator`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
-                console.log(result);
-                
+                if(JSON.parse(result).error) return
                 const updatedProfessors = [...professors];
                 const index = updatedProfessors.findIndex(p => p.code === prof.code);
                 updatedProfessors[index].coordinator = !prof.coordinator;
