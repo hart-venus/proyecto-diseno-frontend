@@ -11,6 +11,11 @@ function PlanDetails() {
         window.location.href = `EventDetail?id=${encodeURIComponent(activity.id)}`;
     }
 
+    const handleEdit = () => {
+        // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
+        window.location.href = 'NewActivity';
+    }
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const urlParams = new URLSearchParams(window.location.search);
@@ -47,14 +52,15 @@ function PlanDetails() {
 
     return (
         <div>
-            <table class="table-auto w-full border border-gray-200">
+            <table className="table-auto w-full border border-gray-200">
                 <thead>
                     <tr>
-                    <th class="px-4 py-2 bg-gray-100 border border-gray-200">Semana</th>
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200">Fecha</th>
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200">Tipo</th>
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200">Nombre</th>
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200">Ver</th>
+                    <th className="px-4 py-2 bg-gray-100 border border-gray-200">Semana</th>
+                        <th className="px-4 py-2 bg-gray-100 border border-gray-200">Fecha</th>
+                        <th className="px-4 py-2 bg-gray-100 border border-gray-200">Tipo</th>
+                        <th className="px-4 py-2 bg-gray-100 border border-gray-200">Nombre</th>
+                        <th className="px-4 py-2 bg-gray-100 border border-gray-200">Ver</th>
+                        <th className="px-4 py-2 bg-gray-100 border border-gray-200"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,12 +74,27 @@ function PlanDetails() {
                                 <td className="px-4 py-2 border border-gray-200">
                                 <button onClick={() => handleActivity(activity)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-green-500 hover:bg-green-700"></button>
                                 </td>
+                                <td className="px-4 py-2 border border-gray-200">
+                                <button
+                                    onClick={() => handleDelete(activity.id)}
+                                    className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-yellow-500 hover:bg-yellow-700"
+                                >
+                                    Editar
+                                </button>
+                            </td>
                             </tr>
                         ))
                     }
                 </tbody>
             </table>
-
+            <div className="text-center mt-4">
+                <button
+                    onClick={handleEdit}
+                    className="text-white rounded-lg border-4 border-transparent font-bold p-2 bg-blue-500 hover:bg-blue-700"
+                >
+                    Nueva Actividad
+                </button>
+            </div>
         </div>
     )
 }

@@ -4,8 +4,6 @@ function ControlButton({ title, role }) {
             window.location.href = 'ProfessorManagement';
         } else if (title === 'Modificar Cuenta') {
             window.location.href = 'AccountConfig';
-        } else if (title === 'Plan de Trabajo' && role !== 'admin') {
-            window.location.href = 'Planning';
         } else if (title === 'Estudiantes') {
             window.location.href = 'StudentList';
         }
@@ -15,7 +13,6 @@ function ControlButton({ title, role }) {
     if (
         (title === 'Profesores' && role === 'admin') ||
         title === 'Modificar Cuenta' ||
-        (title === 'Plan de Trabajo' && role !== 'admin') ||
         title === 'Estudiantes'
     ) {
         return (

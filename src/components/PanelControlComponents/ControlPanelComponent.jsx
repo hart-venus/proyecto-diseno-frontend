@@ -7,7 +7,6 @@ import { API_URL } from "../../constants";
 const modules = [
     { title: "Modificar Cuenta" },
     { title: "Estudiantes" },
-    { title: "Plan de Trabajo" },
     { title: "Profesores" }
 ];
 
