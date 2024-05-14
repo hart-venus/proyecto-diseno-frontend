@@ -51,6 +51,7 @@ function ProfessorList() {
                 const index = updatedProfessors.findIndex(p => p.code === prof.code);
                 updatedProfessors[index].coordinator = !prof.coordinator;
                 setProfessors(updatedProfessors);
+                console.log(1)
             })
             .catch((error) => console.error(error));
     }
