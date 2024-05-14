@@ -13,12 +13,12 @@ function PlanDetails() {
 
     const handleNew = () => {
         // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
-        window.location.href = 'NewActivity';
+        window.location.href = 'Activities';
     }
 
     const handleEdit = () => {
         // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
-        window.location.href = 'NewActivity';
+        window.location.href = 'Activities';
     }
 
     useEffect(() => {
