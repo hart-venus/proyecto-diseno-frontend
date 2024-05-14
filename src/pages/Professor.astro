@@ -1,37 +1,23 @@
 ---
-import ProfessorForm from "../components/ProfessorComponents/ProfessorForm";
-import AuthenticationChecker from "../components/Authentication";
+import ProfessorForm from "../components/ProfessorComponents/ProfessorForm"
+import AuthenticationChecker from "../components/Authentication" 
 ---
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Professor Form</title>
-    </head>
-    <body>
-        <body class="flex justify-center items-center bg-slate-100">
-            <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
-                <h1 class="text-left text-3xl font-bold my-2">
-                    Formulario Detalles Profesor
-                </h1>
-                <ProfessorForm client:load />
-                <button
-                    id="return"
-                    class="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-red-500 hover:bg-red-700"
-                >
-                    Regresar
-                </button>
-            </div>
-        </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor Form</title>
+</head>
+<body>
+    <body class="flex justify-center items-center bg-slate-100">
+        <div class="w-3/4 bg-white rounded-lg shadow-md p-6">
+            <h1 class="text-left text-3xl font-bold my-2">Formulario Detalles Profesor</h1>
+            <ProfessorForm client:load/>
+        </div>
     </body>
+    
+</body>
 </html>
-<script>
-    const returnButton = document.querySelector("#return");
-    returnButton?.addEventListener("click", () => {
-        window.location.href = "ProfessorManagement";
-    });
-</script>
 
-<AuthenticationChecker client:only="react" />
+<AuthenticationChecker client:only="react"/>

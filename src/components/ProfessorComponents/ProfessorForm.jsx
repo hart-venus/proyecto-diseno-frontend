@@ -8,32 +8,13 @@ function ProfessorForm() {
     const [professor, setProfessor] = useState(null);
     const [profName, setProfName] = useState(null);
     const [formData, setFormData] = useState({
-        name: null,
-        email: null,
-        office_phone: null,
-        cellphone: null,
-        campus: null,
-        image_url: null
+        name: '',
+        email: '',
+        office_phone: '',
+        cellphone: '',
+        status: '',
+        campus: ''
     });
-    const [adminCampus,setAdminCampus] = useState(null);
-
-    //Obtener el campus de la administradora que esta realizando cambios
-    useEffect(() => {
-
-        const userId = window.sessionStorage.getItem('USER_ID')
-
-
-        const requestOptions = {
-            method: "GET",
-            redirect: "follow"
-          };
-          
-          fetch(`${API_URL}/users/${userId}`, requestOptions)
-            .then((response) => response.text())
-            .then((result) => {setAdminCampus(JSON.parse(result).campus)})
-            .catch((error) => console.error(error));
-
-    })
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -71,52 +52,26 @@ function ProfessorForm() {
 
         e.preventDefault();
 
-        const userId = window.sessionStorage.getItem('USER_ID')
         const data = new FormData();
         data.append('full_name', formData.name);
         data.append('email', formData.email);
         data.append('office_phone', formData.office_phone);
         data.append('cellphone', formData.cellphone);
-        data.append('campus', adminCampus);
-        data.append('modified_by', userId);
-        formData.image_url ?? data.append('photo_url', formData.image_url);
+        if(formData.status == 'Activo'){
+           data.append('Status', true); 
+        }else{data.append('Status', false);}
+
+        data.append('campus', formData.campus);
 
         const requestOptions = {
             method: "POST",
             body: data,
             redirect: "follow"
-        };
-
-        fetch(`${API_URL}/professors`, requestOptions)
+          };
+          
+          fetch(`${API_URL}/professors`, requestOptions)
             .then((response) => response.text())
-            .then((result) => { console.log(result); window.location.href = 'ProfessorManagement'})
-            .catch((error) => console.error(error));
-    }
-
-    const handleEditProfessor = (e) => {
-
-        e.preventDefault();
-
-        const userId = window.sessionStorage.getItem('USER_ID')
-
-        const data = new FormData();
-        formData.name ? data.append('full_name', formData.name) : null;
-        formData.email ? data.append('email', formData.email) : null;
-        formData.office_phone ? data.append('office_phone', formData.office_phone) : null;
-        formData.cellphone ? data.append('cellphone', formData.cellphone) : null;
-        formData.campus ? data.append('campus', formData.campus) : null;
-        data.append('modified_by_user_id', userId);
-        formData.image_url ? data.append('photo_url', formData.image_url) : null;
-        
-        const requestOptions = {
-            method: "PUT",
-            body: data,
-            redirect: "follow"
-        };
-        
-        fetch(`${API_URL}/professors/${professor.code}`, requestOptions)
-            .then((response) => response.text())
-            .then((result) => { console.log(result); window.location.href = 'ProfessorManagement' })
+            .then((result) => {console.log(result); window.location.href = 'ProfessorManagement'})
             .catch((error) => console.error(error));
     }
 
@@ -132,14 +87,12 @@ function ProfessorForm() {
         <div>
             {professor ? (
                 // Renderizar formulario para un profesor existente
-                <form className="w-3/4" onSubmit={handleEditProfessor}>
+                <form className="w-3/4">
                     <div className="mb-4">
                         <label className="block text-gray-700">Nombre Completo</label>
                         <input
                             type="text"
                             id="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder={professor.full_name}
                         />
@@ -149,8 +102,6 @@ function ProfessorForm() {
                         <input
                             type="email"
                             id="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder={professor.email}
                         />
@@ -159,9 +110,7 @@ function ProfessorForm() {
                         <label className="block text-gray-700">Telefono Oficina</label>
                         <input
                             type="tel"
-                            id="office_phone"
-                            value={formData.office_phone}
-                            onChange={handleInputChange}
+                            id="Oficina"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder={professor.office_phone}
                         />
@@ -170,31 +119,16 @@ function ProfessorForm() {
                         <label className="block text-gray-700">Celular</label>
                         <input
                             type="tel"
-                            id="cellphone"
-                            value={formData.cellphone}
-                            onChange={handleInputChange}
+                            id="Celular"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             placeholder={professor.cellphone}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Campus</label>
-                        <input
-                            type="tel"
-                            id="campus"
-                            value={formData.campus}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.campus}
                         />
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700">Foto</label>
                         <input
                             type="file"
-                            id="photo_url"
-                            value={formData.image_url}
-                            onChange={handleInputChange}
+                            id="imagen"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             accept="image/*"
                         />
@@ -239,7 +173,7 @@ function ProfessorForm() {
                             value={formData.office_phone}
                             onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder="Ej: 2278-7765"
+                            placeholder="Ingrese Telefono de Oficina"
                             required
                         />
                     </div>
@@ -251,7 +185,31 @@ function ProfessorForm() {
                             value={formData.cellphone}
                             onChange={handleInputChange}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder="Ej: 88971234"
+                            placeholder="Ingrese Celular"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Status</label>
+                        <input
+                            type="text"
+                            id="status"
+                            value={formData.status}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                            placeholder="Activo/Desactivo"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700">Campus</label>
+                        <input
+                            type="text"
+                            id="campus"
+                            value={formData.campus}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                            placeholder="Campus"
                             required
                         />
                     </div>
@@ -259,9 +217,7 @@ function ProfessorForm() {
                         <label className="block text-gray-700">Foto</label>
                         <input
                             type="file"
-                            id="photo_url"
-                            value={formData.image_url}
-                            onChange={handleInputChange}
+                            id="imagen"
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             accept="image/*"
                         />
