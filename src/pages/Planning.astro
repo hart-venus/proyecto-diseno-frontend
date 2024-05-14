@@ -1,5 +1,7 @@
 ---
 import AuthenticationChecker from "../components/Authentication" 
+
+import PlanningComponent from "../components/Planning/PlanningComponent"
 ---
 
 <!doctype html>
@@ -12,44 +14,9 @@ import AuthenticationChecker from "../components/Authentication"
         <h1 class="text-3xl font-bold text-gray-900 mb-4">
             Plan de trabajo y actividades
         </h1>
-        <div
-            class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4 items-center justify-center"
-        >
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">
-                Calendario de actividades
-            </h1>
-            <h1 class="text-gray-900 mb-4">
-                Visualización por semanas con actividades planeadas
-            </h1>
-            <table class="table-auto w-full border border-gray-200">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200"
-                            >Fecha</th
-                        >
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200"
-                            >Actividad</th
-                        >
-                        <th class="px-4 py-2 bg-gray-100 border border-gray-200"
-                            >Tipo</th
-                        >
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="px-4 py-2 border border-gray-200"
-                            >01/04/2024 10:10 AM</td
-                        >
-                        <td class="px-4 py-2 border border-gray-200"
-                            >Open Mic</td
-                        >
-                        <td class="px-4 py-2 border border-gray-200"
-                            >Recreativa</td
-                        >
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+        <PlanningComponent client:load/>
+        
         <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">
                 Formulario para nueva actividad

@@ -4,14 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 
-
-
-// const activities = [
-//     { title: "Reunion de Coordinacion", description: "10/05/2023" },
-//     { title: "Taller de Capacitacion", description: "15/05/2023" },
-//     { title: "Evaluacion de Proyectos", description: "20/05/2023" },
-// ];
-
 const modules = [
     { title: "Modificar Cuenta" },
     { title: "Estudiantes" },
