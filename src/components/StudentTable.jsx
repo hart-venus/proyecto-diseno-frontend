@@ -16,8 +16,9 @@ function StudentInfo() {
       try {
         const response = await axios.get(`${API_URL}/students${filterOption}`);
         setStudentData(response.data);
+        setError(null)
       } catch (error) {
-        setError('Error al cargar la información de los estudiantes. Inténtelo de nuevo más tarde.');
+        setError('No se han encontrado estudiantes.');
         console.error('Error fetching student data:', error);
       }
     };
