@@ -107,6 +107,8 @@ function ProfessorForm() {
         formData.campus ? data.append('campus', formData.campus) : null;
         data.append('modified_by_user_id', userId);
         formData.image_url ? data.append('photo_url', formData.image_url) : null;
+
+        console.log(data)
         
         const requestOptions = {
             method: "PUT",

@@ -45,6 +45,7 @@ function ProfessorList() {
         fetch(`${API_URL}/professors/${prof.code}/toggle_coordinator`, requestOptions)
             .then((response) => response.text())
             .then((result) => {
+
                 if(JSON.parse(result).error) return
                 const updatedProfessors = [...professors];
                 const index = updatedProfessors.findIndex(p => p.code === prof.code);
@@ -83,6 +84,7 @@ function ProfessorList() {
         axios.request(config)
             .then((response) => {
                 setProfessors(response.data)
+                console.log(response.data)
             })
             .catch((error) => {
                 console.log(error);
