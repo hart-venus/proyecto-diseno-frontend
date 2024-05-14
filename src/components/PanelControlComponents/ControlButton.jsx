@@ -15,7 +15,7 @@ function ControlButton({ title, role }) {
     if (
         (title === 'Profesores' && role === 'admin') ||
         title === 'Modificar Cuenta' ||
-        (title === 'Agregar Plan' && role !== 'admin') ||
+        (title === 'Agregar Plan' && role !== 'admin' && role !== 'professor') ||
         title === 'Estudiantes'
     ) {
         return (
