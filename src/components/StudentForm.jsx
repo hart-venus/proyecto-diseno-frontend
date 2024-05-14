@@ -23,9 +23,11 @@ function StudentForm() {
                 const response = await axios.get(`${API_URL}/students/${studentId}`);
                 setStudentData(response.data);
                 setEditedFields({
+                    carne: response.data.carne,
                     full_name: response.data.full_name,
                     email: response.data.email,
                     phone: response.data.phone,
+                    campus: response.data.campus
                 });
             } catch (error) {
                 console.error('Error fetching student data:', error);
@@ -49,7 +51,6 @@ function StudentForm() {
         setError(null);
         setSuccess(false);
         try {
-            console.log(studentData.carne)
             const response = await axios.put(`${API_URL}/students/${studentData.carne}`, editedFields);
             setStudentData(response.data);
             setSuccess(true);
@@ -73,6 +74,16 @@ function StudentForm() {
     return (
         <form onSubmit={handleSubmit} className="w-full">
             <div className="mb-4">
+                <label htmlFor="carne" className="block text-gray-700">Carne:</label>
+                <input
+                    id="carne"
+                    type="text"
+                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                    value={editedFields.carne}
+                    readOnly={true}
+                />
+            </div>
+            <div className="mb-4">
                 <label htmlFor="full_name" className="block text-gray-700">Full Name:</label>
                 <input
                     id="full_name"
@@ -81,6 +92,7 @@ function StudentForm() {
                     value={editedFields.full_name}
                     onChange={handleChange}
                     required
+                    readOnly={true}
                 />
             </div>
             <div className="mb-4">
