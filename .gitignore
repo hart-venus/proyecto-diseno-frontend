@@ -1,6 +1,11 @@
 # build output
 dist/
 
+#firebase
+.firebase
+.firebaserc
+firebase.json
+
 # generated types
 .astro/
 
