@@ -4,14 +4,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 
-
-
-// const activities = [
-//     { title: "Reunion de Coordinacion", description: "10/05/2023" },
-//     { title: "Taller de Capacitacion", description: "15/05/2023" },
-//     { title: "Evaluacion de Proyectos", description: "20/05/2023" },
-// ];
-
 const modules = [
     { title: "Modificar Cuenta" },
     { title: "Estudiantes" },
@@ -55,17 +47,17 @@ function ControlPanelComponent() {
     useEffect(() => {
 
         const userId = window.sessionStorage.getItem('USER_ID')
-    
+
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
             url: `${API_URL}/professors/search?query=${userId}`,
         };
-    
+
         axios.request(config)
             .then((response) => {
                 console.log(response.data[0].coordinator)
-                if (response.data[0].coordinator === true){
+                if (response.data[0].coordinator === true) {
                     window.sessionStorage.setItem('USER_ROLE', 'coord')
                     setRole('coord')
                     console.log(role)
@@ -99,20 +91,26 @@ function ControlPanelComponent() {
             method: 'get',
             maxBodyLength: Infinity,
             url: `${API_URL}/activities`,
-            headers: { }
-          };
-          
-          axios.request(config)
-          .then((response) => {
-            console.log(response.data)
-            const newActivities = response.data;
-            setActivities(newActivities);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-          
-    },[])
+            headers: {}
+        };
+
+        axios.request(config)
+            .then((response) => {
+                const newActivities = response.data;
+                setActivities(newActivities);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }, [])
+
+    //Hacer logOut
+    const handleLogOut = () => {
+        window.sessionStorage.removeItem('role')
+        window.sessionStorage.removeItem('USER_ID')
+        window.location.href = 'login'
+    }
 
     return (
         <div className="w-3/4 bg-white rounded-lg shadow-md p-6">
@@ -166,6 +164,10 @@ function ControlPanelComponent() {
                     ))
                 }
             </div>
+            <button onClick={handleLogOut}
+                class="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-red-500 hover:bg-red-700">
+                Log Out
+            </button>
         </div>
     )
 }
