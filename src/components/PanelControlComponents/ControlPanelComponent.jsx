@@ -14,7 +14,7 @@ const modules = [
 function ControlPanelComponent() {
 
     const [guideTeam, setGuideTeam] = useState([])
-    const [activities, setActivities] = useState([])
+    const [plans, setPlans] = useState([])
     const [role, setRole] = useState('')
 
     //Use Effect para obtener rol del usuario y saber que renderizar
@@ -90,19 +90,18 @@ function ControlPanelComponent() {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `${API_URL}/activities`,
-            headers: {}
-        };
-
-        axios.request(config)
-            .then((response) => {
-                const newActivities = response.data;
-                setActivities(newActivities);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
+            url: `${API_URL}/work_plans`,
+            headers: { }
+          };
+          
+          axios.request(config)
+          .then((response) => {
+            const newPlans = response.data
+            setPlans(newPlans)
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     }, [])
 
     //Hacer logOut
@@ -147,19 +146,19 @@ function ControlPanelComponent() {
             </div>
 
             <p className="text-left text-lg font-bold my-4">
-                Vista de Actividades Programadas
+                Vista de Planes Programados
             </p>
 
             <div className="grid grid-cols-3 gap-4">
                 {
-                    activities && activities.map((activity, index) => (
+                    plans && plans.map((plan, index) => (
                         <ControlCard
                             key={index}
                             client:load
-                            title={activity.name}
-                            description={`Semana: ${activity.week}`}
+                            title={plan.campus}
+                            description={`Fecha de Inicio: ${plan.start_date}`}
                             interactive={true}
-                            id={activity.id}
+                            id={plan.id}
                         />
                     ))
                 }

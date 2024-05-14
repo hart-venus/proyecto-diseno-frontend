@@ -35,7 +35,7 @@ function ActivityDetail() {
                 const newActivity = response.data
                 setActivity(newActivity)
 
-                if(newActivity.status == "PLANEADA"){
+                if (newActivity.status == "PLANEADA") {
                     setPlaneada(true)
                 }
             })
@@ -56,12 +56,25 @@ function ActivityDetail() {
             </span>
 
             <h1 className="text-left text-2xl font-bold mt-4">{activity.name}</h1>
-            <p className="text-left text-lg">Descripcion: {activity.description}</p>
-            <p className="text-left text-lg">Fecha: {activity.date_time}</p>
-            <p className="text-left text-lg">Localizacion: {activity.location}</p>
-            <h1 className="text-left text-2xl font-bold mt-4">Foro de Comentarios</h1>
+            <p className="text-left text-lg">Tipo: {activity.activity_type}</p>
+            <p className="text-left text-lg">Fecha: {activity.date}</p>
+            <p className="text-left text-lg">Hora: {activity.time}</p>
+            {
+                activity.is_remote == 'false' &&
+                <p className="text-left text-lg">Presencial</p>
+            }
+            {
+                activity.is_remote == 'true' &&
+                <span>
+                    <p className="text-left text-lg">Remota</p>
+                    <p className="text-left text-lg">Link: {activity.meeting_link}</p>
+                </span>
 
-            <Messages activity={activity.title} />
+            }
+
+            {/* <h1 className="text-left text-2xl font-bold mt-4">Foro de Comentarios</h1>
+
+            <Messages activity={activity.title} /> */}
 
         </div>
     )

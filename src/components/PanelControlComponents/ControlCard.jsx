@@ -3,7 +3,7 @@ function ControlCard({ title, description, interactive, id}) {
 
     const handleClick = () => {
         if(interactive){
-            window.location.href = `EventDetail?id=${encodeURIComponent(id)}`;
+            window.location.href = `PlanActivities?id=${encodeURIComponent(id)}`;
         }
     }
 
