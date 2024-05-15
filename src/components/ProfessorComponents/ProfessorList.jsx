@@ -92,10 +92,20 @@ function ProfessorList() {
             });
     }, [])
 
+    //Convertir el formato url al que es
+    const converPhotoUrl = (url) => {
+        if (!url) return '';
+        const bucketName = url.split('/')[3];
+        const objectPath = url.split(`${bucketName}/`)[1];
+        const newURL = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(objectPath)}?alt=media`;
+        return newURL;
+    }
+
     return (
         <table className="mt-6 w-full table-auto border-collapse border border-slate-500 border-spacing-x-3">
             <thead className="bg-neutral-200">
                 <tr>
+                    <th className="border border-slate-600">Foto</th>
                     <th className="border border-slate-600">Nombre</th>
                     <th className="border border-slate-600">Campus</th>
                     <th className="border border-slate-600">Correo</th>
@@ -110,6 +120,9 @@ function ProfessorList() {
                 {
                     professors && professors.map((prof, index) => (
                         <tr key={index}>
+                            <td className="w-28 border border-slate-700">
+                                {<img className="ms-10-1 border-slate-950 border-2 rounded-full w-28 h-28" src={converPhotoUrl(prof.photo_url)} alt='' />}
+                            </td>
                             <td className="border border-slate-700 p-2">{prof.full_name}</td>
                             <td className="border border-slate-700 p-2">{prof.campus}</td>
                             <td className="border border-slate-700 p-2">{prof.email}</td>
