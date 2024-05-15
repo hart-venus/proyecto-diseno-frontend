@@ -34,7 +34,7 @@ const NewActivityForm = () => {
             reminder_days: remainder,
             meeting_link: link,
             activity_type: type,
-            is_remote: mode == 'Remota', // Convertimos el modo a booleano
+            is_remote: mode === 'Remota', // Convertimos el modo a booleano
             status,
             poster_url: null // Ajustar esto cuando manejes la subida del poster
         };
@@ -182,15 +182,6 @@ const NewActivityForm = () => {
                         Subir poster
                     </label>
                     <input id="photoInput" type="file" accept="image/*" className="hidden" />
-                </div>
-                <div className="justify-center mb-4">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                        Estado de actividad
-                    </h1>
-                    <button onClick={() => setStatus('PLANEADA')} className={`bg-green-500 hover:bg-green-600 text-white py-2 px-2 rounded mr-2 ${status === 'PLANEADA' ? 'bg-green-700' : ''}`}>Planeada</button>
-                    <button onClick={() => setStatus('NOTIFICADA')} className={`bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-2 rounded mr-2 ${status === 'NOTIFICADA' ? 'bg-yellow-700' : ''}`}>Notificada</button>
-                    <button onClick={() => setStatus('REALIZADA')} className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded mr-2 ${status === 'REALIZADA' ? 'bg-blue-700' : ''}`}>Realizada</button>
-                    <button onClick={() => setStatus('CANCELADA')} className={`bg-red-500 hover:bg-red-600 text-white py-2 px-2 rounded ${status === 'CANCELADA' ? 'bg-red-700' : ''}`}>Cancelada</button>
                 </div>
                 <input
                     type="submit"
