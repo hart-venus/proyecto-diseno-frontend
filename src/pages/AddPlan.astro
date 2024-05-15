@@ -1,5 +1,6 @@
 ---
 import AddPlanComponent from "../components/ActivitiesAndPlan/AddPlanComponent";
+import AuthenticationChecker from "../components/Authentication";
 import ReturnButton from "../components/ReturnButton";
 ---
 
@@ -18,3 +19,4 @@ import ReturnButton from "../components/ReturnButton";
         </div>
     </body>
 </html>
+<AuthenticationChecker client:only="react"/>

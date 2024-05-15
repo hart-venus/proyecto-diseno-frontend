@@ -1,4 +1,5 @@
 ---
+import AuthenticationChecker from '../components/Authentication'
 import PlanDetails from '../components/Plans/PlanDetails.jsx'
 import ReturnButton from '../components/ReturnButton'
 ---
@@ -17,3 +18,4 @@ import ReturnButton from '../components/ReturnButton'
     </div>
 </body>
 </html>
+<AuthenticationChecker client:only="react"/>

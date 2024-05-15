@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../../constants';
+import ReturnButton from '../ReturnButton';
 
 function StudentForm() {
     const [studentData, setStudentData] = useState(null);
@@ -73,7 +74,8 @@ function StudentForm() {
 
     return (
         <div>
-            <form onSubmit={handleSubmit} className="w-full">
+            <ReturnButton title={'Regresar'} page={'StudentList'}/>
+            <form onSubmit={handleSubmit} className="w-full mt-4">
                 <div className="mb-4">
                     <label htmlFor="carne" className="block text-gray-700">Carne:</label>
                     <input

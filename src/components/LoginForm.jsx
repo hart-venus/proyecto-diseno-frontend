@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../constants';
+import ErrorPopup from './ErrorPopup';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -111,7 +112,7 @@ function LoginForm() {
 
       <button onClick={toggleForgotPasswordPopup} className="text-indigo-600 hover:underline mt-2 block">Olvidé mi contraseña</button>
 
-      {error && <h1 className="text-red-600 text-xl mt-3">{error}</h1>}
+      {error && <ErrorPopup setError={setError} errorMessage={'Correo o Contraseña Invalidos'} client:load/>}
 
       {showForgotPassword && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">

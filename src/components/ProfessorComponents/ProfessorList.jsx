@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
+import ErrorPopup from "../ErrorPopup";
 
 function ProfessorList() {
 
     const [professors, setProfessors] = useState(null)
     const [adminCampus, setAdminCampus] = useState(null);
+    const [error, setError] = useState(false)
 
     const handleEdit = (prof) => {
         window.location.href = `Professor?prof=${encodeURIComponent(prof.full_name)}`;
@@ -31,7 +33,18 @@ function ProfessorList() {
 
         fetch(`${API_URL}/professors/${prof.code}`, requestOptions)
             .then((response) => response.text())
-            .then((result) => { console.log(result); })
+            .then((result) => {
+                console.log(result);
+                const updatedProfessors = [...professors];
+                const index = updatedProfessors.findIndex(p => p.code === prof.code);
+                if (prof.status == 'active') {
+                    updatedProfessors[index].status = 'inactive';
+                }
+                else {
+                    updatedProfessors[index].status = 'active';
+                }
+                setProfessors(updatedProfessors);
+            })
             .catch((error) => console.error(error));
     }
 
@@ -46,12 +59,11 @@ function ProfessorList() {
             .then((response) => response.text())
             .then((result) => {
 
-                if(JSON.parse(result).error) return
+                if (JSON.parse(result).error) { setError(true); return }
                 const updatedProfessors = [...professors];
                 const index = updatedProfessors.findIndex(p => p.code === prof.code);
                 updatedProfessors[index].coordinator = !prof.coordinator;
                 setProfessors(updatedProfessors);
-                console.log(1)
             })
             .catch((error) => console.error(error));
     }
@@ -143,9 +155,10 @@ function ProfessorList() {
                                     <span className="text-xl" style={{ color: 'red' }}>No</span> // Cross
                                 )}
                             </td>
-                            <td className="border border-slate-700 w-64">
+                            <td className="border border-slate-700 w-72">
                                 <button onClick={() => handleEdit(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-yellow-500 hover:bg-yellow-700">Editar</button>
-                                <button onClick={() => handleStatus(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-red-600 hover:bg-red-800">Baja</button>
+                                {prof.status == 'active' && <button onClick={() => handleStatus(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-red-600 hover:bg-red-800">Baja</button>}
+                                {prof.status == 'inactive' && <button onClick={() => handleStatus(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-green-500 hover:bg-green-700">Alta</button>}
                                 {adminCampus && adminCampus === 'CA' && prof.coordinator == true && (
                                     <button onClick={() => handleCoordinator(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-red-500 hover:bg-red-700">Coordinador</button>
                                 )}
@@ -157,6 +170,8 @@ function ProfessorList() {
                     ))
                 }
             </tbody>
+
+            {error && <ErrorPopup setError={setError} errorMessage={'Ya existe un coordinador en este campus'} />}
         </table>
 
     );
