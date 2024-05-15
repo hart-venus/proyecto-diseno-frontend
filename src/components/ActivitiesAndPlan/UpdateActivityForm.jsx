@@ -10,7 +10,7 @@ const UpdateActivityForm = () => {
     const [time, setTime] = useState('');
     const [name, setActName] = useState('');
     const [responsible, setResponsible] = useState('');
-    const [announcementDays, setAnnouncementDays] = useState(7); // Valor por defecto
+    const [announcementDays, setAnnouncementDays] = useState(null); // Valor por defecto
     const [remainder, setRemainder] = useState('');
     const [link, setLink] = useState('');
     const [type, setType] = useState('');
@@ -18,7 +18,21 @@ const UpdateActivityForm = () => {
     const [status, setStatus] = useState('PLANEADA'); // Por defecto, estado planeada
     const [poster, setPoster] = useState(null); // Para el poster, usaremos un estado de archivo
     const workPlanId = window.sessionStorage.getItem("PLAN_ID");
+    const [activity, setActivity] = useState([])
     const activityId = new URLSearchParams(window.location.search);
+
+    useEffect(() => {
+        const id = activityId.get("id")
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`${API_URL}/activities/${id}`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => { setActivity(JSON.parse(result)) })
+            .catch((error) => console.error(error));
+    }, [])
 
     // Manejar el envío del formulario
     const handleSubmit = async (e) => {
@@ -60,6 +74,8 @@ const UpdateActivityForm = () => {
             setMode('Presencial'); // Restablecer el valor por defecto
             setStatus('PLANEADA'); // Restablecer el estado a planeada
             setPoster(null); // Limpiar el estado del poster
+
+            window.location.href = `PlanActivities?id=${page}`
         } catch (error) {
             console.error('Error al enviar los datos:', error);
             // Manejar errores de solicitud
@@ -82,8 +98,8 @@ const UpdateActivityForm = () => {
                         value={week}
                         onChange={(e) => setWeek(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Semana"
-                        required
+                        placeholder={`Semana: ${activity.week}`}
+
                     />
                 </div>
                 <div className="mb-4">
@@ -92,7 +108,7 @@ const UpdateActivityForm = () => {
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        required
+
                     />
                 </div>
                 <div className="mb-4">
@@ -101,7 +117,7 @@ const UpdateActivityForm = () => {
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        required
+
                     />
                 </div>
                 <div className="mb-4">
@@ -110,8 +126,8 @@ const UpdateActivityForm = () => {
                         value={name}
                         onChange={(e) => setActName(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Actividad"
-                        required
+                        placeholder={`Nombre: ${activity.name}`}
+
                     />
                 </div>
                 <div className="mb-4">
@@ -120,8 +136,8 @@ const UpdateActivityForm = () => {
                         value={responsible}
                         onChange={(e) => setResponsible(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Responsable"
-                        required
+                        placeholder={"Responsable"}
+
                     />
                 </div>
                 <div className="mb-4">
@@ -130,8 +146,8 @@ const UpdateActivityForm = () => {
                         value={announcementDays}
                         onChange={(e) => setAnnouncementDays(parseInt(e.target.value))}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Días de anuncio"
-                        required
+                        placeholder={`Anuncio (días) ${activity.announcement_days}`}
+
                     />
                 </div>
                 <div className="mb-4">
@@ -140,8 +156,8 @@ const UpdateActivityForm = () => {
                         value={remainder}
                         onChange={(e) => setRemainder(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Recordatorio (días)"
-                        required
+                        placeholder={`Recordatorio (días)  ${activity.reminder_days}`}
+
                     />
                 </div>
                 <div className="mb-4">
@@ -150,8 +166,8 @@ const UpdateActivityForm = () => {
                         value={link}
                         onChange={(e) => setLink(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Enlace a reunión"
-                        required
+                        placeholder={`Enlace a reunión: ${activity.meeting_link}`}
+
                     />
                 </div>
                 <div className="mb-4">
@@ -159,7 +175,7 @@ const UpdateActivityForm = () => {
                         value={type}
                         onChange={(e) => setType(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        required
+
                     >
                         <option value="">Seleccionar tipo de actividad</option>
                         <option value="Orientadoras">Orientadoras</option>
@@ -174,7 +190,7 @@ const UpdateActivityForm = () => {
                         value={mode}
                         onChange={(e) => setMode(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        required
+
                     >
                         <option value="Presencial">Presencial</option>
                         <option value="Remota">Remota</option>
