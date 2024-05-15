@@ -14,9 +14,9 @@ function ProfessorForm() {
         office_phone: null,
         cellphone: null,
         campus: null,
-        image_url: null
     });
-    const [adminCampus,setAdminCampus] = useState(null);
+    const [photo, setPhoto] = useState(null);
+    const [adminCampus, setAdminCampus] = useState(null);
 
     //Obtener el campus de la administradora que esta realizando cambios
     useEffect(() => {
@@ -27,15 +27,16 @@ function ProfessorForm() {
         const requestOptions = {
             method: "GET",
             redirect: "follow"
-          };
-          
-          fetch(`${API_URL}/users/${userId}`, requestOptions)
+        };
+
+        fetch(`${API_URL}/users/${userId}`, requestOptions)
             .then((response) => response.text())
-            .then((result) => {setAdminCampus(JSON.parse(result).campus)})
+            .then((result) => { setAdminCampus(JSON.parse(result).campus) })
             .catch((error) => console.error(error));
 
     })
 
+    //Use effect para obtener id profe que edita
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const urlParams = new URLSearchParams(window.location.search);
@@ -47,6 +48,7 @@ function ProfessorForm() {
         }
     }, []);
 
+    //Use effect para obtener el profesor
     useEffect(() => {
         if (!profName) return
 
@@ -60,6 +62,14 @@ function ProfessorForm() {
         axios.request(config)
             .then((response) => {
                 const newProfessor = response.data[0];
+                //Convertir la url a la correcta
+                const firstURL = newProfessor.photo_url;
+                const bucketName = firstURL.split('/')[3];
+                const objectPath = firstURL.split(`${bucketName}/`)[1];
+                const newURL = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(objectPath)}?alt=media`;
+                newProfessor.photo_url = newURL
+
+                //Setear el profe
                 setProfessor(newProfessor)
             })
             .catch((error) => {
@@ -79,8 +89,8 @@ function ProfessorForm() {
         data.append('office_phone', formData.office_phone);
         data.append('cellphone', formData.cellphone);
         data.append('campus', adminCampus);
+        photo ? data.append('photo', photo) : null;
         data.append('modified_by', userId);
-        formData.image_url ?? data.append('photo_url', formData.image_url);
 
         const requestOptions = {
             method: "POST",
@@ -90,7 +100,7 @@ function ProfessorForm() {
 
         fetch(`${API_URL}/professors`, requestOptions)
             .then((response) => response.text())
-            .then((result) => { console.log(result); window.location.href = 'ProfessorManagement'})
+            .then((result) => { console.log(result); window.location.href = 'ProfessorManagement' })
             .catch((error) => console.error(error));
     }
 
@@ -106,17 +116,15 @@ function ProfessorForm() {
         formData.office_phone ? data.append('office_phone', formData.office_phone) : null;
         formData.cellphone ? data.append('cellphone', formData.cellphone) : null;
         formData.campus ? data.append('campus', formData.campus) : null;
+        photo ? data.append('photo', photo) : null;
         data.append('modified_by_user_id', userId);
-        formData.image_url ? data.append('photo_url', formData.image_url) : null;
 
-        console.log(data)
-        
         const requestOptions = {
             method: "PUT",
             body: data,
             redirect: "follow"
         };
-        
+
         fetch(`${API_URL}/professors/${professor.code}`, requestOptions)
             .then((response) => response.text())
             .then((result) => { console.log(result); window.location.href = 'ProfessorManagement' })
@@ -129,88 +137,92 @@ function ProfessorForm() {
             ...formData,
             [id]: value
         });
-    }
+    };
 
     return (
         <div>
             {professor ? (
-                // Renderizar formulario para un profesor existente
-                <form className="w-3/4" onSubmit={handleEditProfessor}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Nombre Completo</label>
-                        <input
-                            type="text"
-                            id="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.full_name}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Correo Electronico</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.email}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Telefono Oficina</label>
-                        <input
-                            type="tel"
-                            id="office_phone"
-                            value={formData.office_phone}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.office_phone}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Celular</label>
-                        <input
-                            type="tel"
-                            id="cellphone"
-                            value={formData.cellphone}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.cellphone}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Campus</label>
-                        <input
-                            type="tel"
-                            id="campus"
-                            value={formData.campus}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            placeholder={professor.campus}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Foto</label>
-                        <input
-                            type="file"
-                            id="photo_url"
-                            value={formData.image_url}
-                            onChange={handleInputChange}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
-                            accept="image/*"
-                        />
-                    </div>
-                    <button
-                        className="text-white mx-4 w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
-                        Editar
-                    </button>
-                    <ReturnButton title={'Regresar'} page={'ProfessorManagement'} client:load />
-                </form>
+                <div className= "flex place-content-between">
+                    {/* // Renderizar formulario para un profesor existente */}
+                    <form className="w-3/4" onSubmit={handleEditProfessor} encType="multipart/form-data">
+                        <div className="mb-4">
+                            <label className="block text-gray-700">Nombre Completo</label>
+                            <input
+                                type="text"
+                                id="name"
+                                value={formData.name}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                                placeholder={professor.full_name}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700">Correo Electronico</label>
+                            <input
+                                type="email"
+                                id="email"
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                                placeholder={professor.email}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700">Telefono Oficina</label>
+                            <input
+                                type="tel"
+                                id="office_phone"
+                                value={formData.office_phone}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                                placeholder={professor.office_phone}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700">Celular</label>
+                            <input
+                                type="tel"
+                                id="cellphone"
+                                value={formData.cellphone}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                                placeholder={professor.cellphone}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700">Campus</label>
+                            <input
+                                type="tel"
+                                id="campus"
+                                value={formData.campus}
+                                onChange={handleInputChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                                placeholder={professor.campus}
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-gray-700">Foto</label>
+                            <input
+                                type="file"
+                                onChange={(e) => setPhoto(e.target.files[0])}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
+                                accept="image/*"
+                            />
+                        </div>
+                        <button
+                            className="text-white mx-4 w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-blue-500 hover:bg-blue-700">
+                            Editar
+                        </button>
+                        <ReturnButton title={'Regresar'} page={'ProfessorManagement'} client:load />
+                    </form>
+
+                    {/* Imagen si es que existe */}
+                    <img className="border-8 border-blue-500 rounded-full w-80 h-72" src={professor.photo_url} alt={`Image for ${professor.full_name}`} />
+                </div>
+
             ) : (
                 // Renderizar para agregar un profesor
-                <form className="w-3/4" onSubmit={handleAddProfessor}>
+                <form className="w-3/4" onSubmit={handleAddProfessor} encType="multipart/form-data">
                     <div className="mb-4">
                         <label className="block text-gray-700">Nombre Completo</label>
                         <input
@@ -264,8 +276,7 @@ function ProfessorForm() {
                         <input
                             type="file"
                             id="photo_url"
-                            value={formData.image_url}
-                            onChange={handleInputChange}
+                            onChange={(e) => setPhoto(e.target.files[0])}
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-700"
                             accept="image/*"
                         />
