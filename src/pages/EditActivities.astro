@@ -1,0 +1,22 @@
+---
+import UpdateActivityForm from "../components/ActivitiesAndPlan/UpdateActivityForm"
+import AuthenticationChecker from "../components/Authentication" 
+---
+
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>UpdateActivity</title>
+    </head>
+    <body class="bg-slate-100 flex flex-col justify-center items-center p-8">
+        <div class="w-2/3 bg-white rounded-lg shadow-md p-6 mb-4">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                Formulario para actualizar una actividad
+            </h1>
+            <UpdateActivityForm client:only="react"/>
+        </div>
+    </body>
+</html>
+
+<AuthenticationChecker client:only="react"/>

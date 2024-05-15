@@ -10,15 +10,13 @@ function PlanDetails() {
     const [userRole, setUserRole] = useState("");
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const urlParams = new URLSearchParams(window.location.search);
-            const newId = urlParams.get('id');
-            setId(newId);
-            window.sessionStorage.setItem('PLAN_ID', newId);
+        const urlParams = new URLSearchParams(window.location.search);
+        const newId = urlParams.get('id');
+        setId(newId);
+        window.sessionStorage.setItem('PLAN_ID', newId);
 
-            const role = window.sessionStorage.getItem('USER_ROLE');
-            setUserRole(role);
-        }
+        const role = window.sessionStorage.getItem('USER_ROLE');
+        setUserRole(role);
     }, []);
 
     const handleActivity = (activity) => {
@@ -27,12 +25,12 @@ function PlanDetails() {
 
     const handleNew = () => {
         // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
-        window.location.href = 'Activities';
+        window.location.href = 'NewActivities';
     }
 
     const handleEdit = (activityId) => {
         // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
-        window.location.href = `Activities?id=${activityId}`;
+        window.location.href = `EditActivities?id=${activityId}`;
     }
 
     useEffect(() => {
