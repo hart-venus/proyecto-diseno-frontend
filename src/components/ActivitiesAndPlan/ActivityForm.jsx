@@ -6,26 +6,37 @@ import ReturnButton from '../ReturnButton';
 const ActivityForm = () => {
     // Estados para almacenar los valores del formulario
     const [week, setWeek] = useState('');
-    const [actName, setActName] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+    const [name, setActName] = useState('');
     const [responsible, setResponsible] = useState('');
+    const [announcementDays, setAnnouncementDays] = useState(7); // Valor por defecto
     const [remainder, setRemainder] = useState('');
     const [link, setLink] = useState('');
     const [type, setType] = useState('');
-    const [mode, setMode] = useState('');
+    const [mode, setMode] = useState('Presencial'); // Valor por defecto
+    const [status, setStatus] = useState('PLANEADA'); // Por defecto, estado planeada
+    const [poster, setPoster] = useState(null); // Para el poster, usaremos un estado de archivo
+    const workPlanId = window.sessionStorage.getItem("PLAN_ID");
 
     // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         // Crear el objeto con los datos del formulario
         const formData = {
+            work_plan_id: workPlanId,
             week,
-            actName,
-            responsible,
-            remainder,
-            link,
-            type,
-            mode
+            date,
+            time,
+            name,
+            responsible_ids: [responsible],
+            announcement_days: announcementDays,
+            reminder_days: remainder,
+            meeting_link: link,
+            activity_type: type,
+            is_remote: mode == 'Remota', // Convertimos el modo a booleano
+            status,
+            poster_url: null // Ajustar esto cuando manejes la subida del poster
         };
 
         try {
@@ -35,12 +46,17 @@ const ActivityForm = () => {
 
             // Limpiar el formulario después del envío exitoso
             setWeek('');
+            setDate('');
+            setTime('');
             setActName('');
             setResponsible('');
+            setAnnouncementDays(7); // Restablecer el valor por defecto
             setRemainder('');
-            setLink('');
+            setLink('-');
             setType('');
-            setMode('');
+            setMode('Presencial'); // Restablecer el valor por defecto
+            setStatus('PLANEADA'); // Restablecer el estado a planeada
+            setPoster(null); // Limpiar el estado del poster
         } catch (error) {
             console.error('Error al enviar los datos:', error);
             // Manejar errores de solicitud
@@ -50,16 +66,18 @@ const ActivityForm = () => {
     //Para setear a la pagina que debe viajar
     const [page, setPage] = useState('');
     useEffect(() => {
-        const newPage = window.sessionStorage.getItem('PLAN_ID')
-        setPage(newPage)
-    }, [])
+        const newPage = window.sessionStorage.getItem('PLAN_ID');
+        setPage(newPage);
+    }, []);
 
     return (
         <>
             <form onSubmit={handleSubmit} className="w-full">
                 <div className="mb-4">
                     <input
-                        id="week"
+                        type="text"
+                        value={week}
+                        onChange={(e) => setWeek(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
                         placeholder="Semana"
                         required
@@ -67,7 +85,27 @@ const ActivityForm = () => {
                 </div>
                 <div className="mb-4">
                     <input
-                        id="actName"
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <input
+                        type="time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        value={name}
+                        onChange={(e) => setActName(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
                         placeholder="Actividad"
                         required
@@ -75,7 +113,9 @@ const ActivityForm = () => {
                 </div>
                 <div className="mb-4">
                     <input
-                        id="responsible"
+                        type="text"
+                        value={responsible}
+                        onChange={(e) => setResponsible(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
                         placeholder="Responsable"
                         required
@@ -83,35 +123,59 @@ const ActivityForm = () => {
                 </div>
                 <div className="mb-4">
                     <input
-                        id="remainder"
+                        type="number"
+                        value={announcementDays}
+                        onChange={(e) => setAnnouncementDays(parseInt(e.target.value))}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Recordatorio"
+                        placeholder="Días de anuncio"
                         required
                     />
                 </div>
                 <div className="mb-4">
                     <input
-                        id="link"
+                        type="number"
+                        value={remainder}
+                        onChange={(e) => setRemainder(e.target.value)}
+                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                        placeholder="Recordatorio (días)"
+                        required
+                    />
+                </div>
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        value={link}
+                        onChange={(e) => setLink(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
                         placeholder="Enlace a reunión"
                         required
                     />
                 </div>
                 <div className="mb-4">
-                    <input
-                        id="type"
+                    <select
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Tipo de actividad"
                         required
-                    />
+                    >
+                        <option value="">Seleccionar tipo de actividad</option>
+                        <option value="Orientadoras">Orientadoras</option>
+                        <option value="Motivacionales">Motivacionales</option>
+                        <option value="De apoyo a la vida estudiantil">De apoyo a la vida estudiantil</option>
+                        <option value="De orden técnico">De orden técnico</option>
+                        <option value="De recreación">De recreación</option>
+                    </select>
                 </div>
                 <div className="mb-4">
-                    <input
-                        id="mode"
+                    <select
+                        value={mode}
+                        onChange={(e) => setMode(e.target.value)}
                         className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                        placeholder="Modalidad"
                         required
-                    />
+                    >
+                        <option value="Presencial">Presencial</option>
+                        <option value="Remota">Remota</option>
+                    </select>
                 </div>
                 <div id="poster" className="mb-4">
                     <label htmlFor="photoInput" className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
@@ -123,10 +187,10 @@ const ActivityForm = () => {
                     <h1 className="text-3xl font-bold text-gray-900 mb-4">
                         Estado de actividad
                     </h1>
-                    <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-2 rounded mr-2">Planeada</button>
-                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-2 rounded mr-2">Notificada</button>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded mr-2">Realizada</button>
-                    <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-2 rounded">Cancelada</button>
+                    <button onClick={() => setStatus('PLANEADA')} className={`bg-green-500 hover:bg-green-600 text-white py-2 px-2 rounded mr-2 ${status === 'PLANEADA' ? 'bg-green-700' : ''}`}>Planeada</button>
+                    <button onClick={() => setStatus('NOTIFICADA')} className={`bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-2 rounded mr-2 ${status === 'NOTIFICADA' ? 'bg-yellow-700' : ''}`}>Notificada</button>
+                    <button onClick={() => setStatus('REALIZADA')} className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded mr-2 ${status === 'REALIZADA' ? 'bg-blue-700' : ''}`}>Realizada</button>
+                    <button onClick={() => setStatus('CANCELADA')} className={`bg-red-500 hover:bg-red-600 text-white py-2 px-2 rounded ${status === 'CANCELADA' ? 'bg-red-700' : ''}`}>Cancelada</button>
                 </div>
                 <div id="evidence" className="mb-4">
                     <label htmlFor="photoInput" className="cursor-pointer px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700">
@@ -141,10 +205,7 @@ const ActivityForm = () => {
                 />
                 <ReturnButton title={'Regresar'} page={`PlanActivities?id=${page}`} client:load />
             </form>
-
         </>
-
-
     );
 };
 
