@@ -58,7 +58,7 @@ function PlanDetails() {
     }
 
     return (
-        <div>
+        <div className="max-h-80 overflow-y-auto">
             <table className="table-auto w-full border border-gray-200">
                 <thead>
                     <tr>
