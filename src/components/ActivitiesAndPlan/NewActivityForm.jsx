@@ -34,7 +34,7 @@ const NewActivityForm = () => {
             reminder_days: remainder,
             meeting_link: link,
             activity_type: type,
-            is_remote: mode === 'Remota', // Convertimos el modo a booleano
+            is_remote: mode === 'Remota' ? "true" : "false",
             status,
             poster_url: null // Ajustar esto cuando manejes la subida del poster
         };
