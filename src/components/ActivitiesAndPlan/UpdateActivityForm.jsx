@@ -59,7 +59,12 @@ const UpdateActivityForm = () => {
     }, [activityData]);
 
     const handleShowEvidenceForm = () => {
-        setShowEvidenceForm(true);
+        if (status !== 'PLANEADA') {
+            setShowEvidenceForm(true);
+        } else {
+            // Muestra un mensaje o realiza alguna acción para informar al usuario que no se puede marcar como realizada una actividad planeada
+            console.log('No se puede marcar como realizada una actividad planeada.');
+        }
     };
 
     // Función para notificar una actividad
@@ -144,7 +149,7 @@ const UpdateActivityForm = () => {
             reminder_days: remainder,
             meeting_link: link,
             activity_type: type,
-            is_remote: mode === 'Remota', // Convertimos el modo a booleano
+            is_remote: mode === 'Remota' ? "true" : "false",
             status,
             poster_url: null // Ajustar esto cuando manejes la subida del poster
         };
