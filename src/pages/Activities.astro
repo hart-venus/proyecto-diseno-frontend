@@ -1,5 +1,5 @@
 ---
-import ActivityForm from "../components/ActivitiesAndPlan/ActivityForm"
+import NewActivityForm from "../components/ActivitiesAndPlan/NewActivityForm"
 import AuthenticationChecker from "../components/Authentication" 
 ---
 
@@ -14,7 +14,7 @@ import AuthenticationChecker from "../components/Authentication"
             <h1 class="text-3xl font-bold text-gray-900 mb-4">
                 Formulario para nueva actividad
             </h1>
-            <ActivityForm client:only="react"/>
+            <NewActivityForm client:only="react"/>
         </div>
     </body>
 </html>

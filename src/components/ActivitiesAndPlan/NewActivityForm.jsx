@@ -3,7 +3,7 @@ import axios from 'axios';
 import { API_URL } from '../../constants';
 import ReturnButton from '../ReturnButton';
 
-const ActivityForm = () => {
+const NewActivityForm = () => {
     // Estados para almacenar los valores del formulario
     const [week, setWeek] = useState('');
     const [date, setDate] = useState('');
@@ -192,12 +192,6 @@ const ActivityForm = () => {
                     <button onClick={() => setStatus('REALIZADA')} className={`bg-blue-500 hover:bg-blue-600 text-white py-2 px-2 rounded mr-2 ${status === 'REALIZADA' ? 'bg-blue-700' : ''}`}>Realizada</button>
                     <button onClick={() => setStatus('CANCELADA')} className={`bg-red-500 hover:bg-red-600 text-white py-2 px-2 rounded ${status === 'CANCELADA' ? 'bg-red-700' : ''}`}>Cancelada</button>
                 </div>
-                <div id="evidence" className="mb-4">
-                    <label htmlFor="photoInput" className="cursor-pointer px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700">
-                        Subir evidencia
-                    </label>
-                    <input id="photoInput" type="file" accept="image/*" className="hidden" />
-                </div>
                 <input
                     type="submit"
                     value="Guardar"
@@ -209,4 +203,4 @@ const ActivityForm = () => {
     );
 };
 
-export default ActivityForm;
+export default NewActivityForm;
