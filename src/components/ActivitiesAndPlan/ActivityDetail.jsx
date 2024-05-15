@@ -99,6 +99,7 @@ function ActivityDetail() {
                             <div key={comment.id} className="border border-gray-300 rounded-lg p-4 mb-4">
                                 <p className="text-lg">{comment.content}</p>
                                 <p className="text-sm text-gray-500 mt-2">Por: {comment.professor_name}</p>
+                                <p className="text-sm text-gray-500 mt-2">{comment.created_at}</p>
                             </div>
                         ))}
                     </div>
