@@ -63,12 +63,13 @@ function ProfessorForm() {
             .then((response) => {
                 const newProfessor = response.data[0];
                 //Convertir la url a la correcta
-                const firstURL = newProfessor.photo_url;
-                const bucketName = firstURL.split('/')[3];
-                const objectPath = firstURL.split(`${bucketName}/`)[1];
-                const newURL = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(objectPath)}?alt=media`;
-                newProfessor.photo_url = newURL
-
+                if (newProfessor.photo_url != null) {
+                    const firstURL = newProfessor.photo_url;
+                    const bucketName = firstURL.split('/')[3];
+                    const objectPath = firstURL.split(`${bucketName}/`)[1];
+                    const newURL = `https://firebasestorage.googleapis.com/v0/b/${bucketName}/o/${encodeURIComponent(objectPath)}?alt=media`;
+                    newProfessor.photo_url = newURL
+                }
                 //Setear el profe
                 setProfessor(newProfessor)
             })
@@ -142,7 +143,7 @@ function ProfessorForm() {
     return (
         <div>
             {professor ? (
-                <div className= "flex place-content-between">
+                <div className="flex place-content-between">
                     {/* // Renderizar formulario para un profesor existente */}
                     <form className="w-3/4" onSubmit={handleEditProfessor} encType="multipart/form-data">
                         <div className="mb-4">
@@ -217,7 +218,12 @@ function ProfessorForm() {
                     </form>
 
                     {/* Imagen si es que existe */}
-                    <img className="border-8 border-blue-500 rounded-full w-80 h-72" src={professor.photo_url} alt={`Image for ${professor.full_name}`} />
+                    {
+                        professor.photo_url != null &&
+                        <img className="border-8 border-blue-500 rounded-full w-80 h-72" src={professor.photo_url} alt={`Image for ${professor.full_name}`} />
+                    }
+
+
                 </div>
 
             ) : (

@@ -16,7 +16,7 @@ function ControlPanelComponent() {
     const [guideTeam, setGuideTeam] = useState([])
     const [plans, setPlans] = useState([])
     const [role, setRole] = useState('')
-    const [campus,setCampus] = useState('')
+    const [campus, setCampus] = useState('')
 
     //Use Effect para obtener rol del usuario y saber que renderizar
     useEffect(() => {
@@ -62,10 +62,9 @@ function ControlPanelComponent() {
                 if (response.data[0].coordinator === true) {
                     window.sessionStorage.setItem('USER_ROLE', 'coord')
                     setRole('coord')
-                    console.log(role)
                 }
             })
-    }, [])
+    }, [role])
 
     //Use effect para obtener profesores guía y coordinadores que son los principales que se mostraran
     useEffect(() => {
@@ -93,17 +92,17 @@ function ControlPanelComponent() {
             method: 'get',
             maxBodyLength: Infinity,
             url: `${API_URL}/work_plans`,
-            headers: { }
-          };
-          
-          axios.request(config)
-          .then((response) => {
-            const newPlans = response.data
-            setPlans(newPlans)
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+            headers: {}
+        };
+
+        axios.request(config)
+            .then((response) => {
+                const newPlans = response.data
+                setPlans(newPlans)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, [])
 
     //Hacer logOut
@@ -133,7 +132,7 @@ function ControlPanelComponent() {
                         )
                     ))
                 }
-                                {
+                {
                     guideTeam && guideTeam.map((member, index) => (
                         role == "admin" && member.status == "active" && (
                             <ControlCard
@@ -167,7 +166,20 @@ function ControlPanelComponent() {
             <div className="grid grid-cols-3 gap-4">
                 {
                     plans && plans.map((plan, index) => (
+                        role != 'admin' && plan.campus == campus &&
                         <ControlCard
+                            key={index}
+                            client:load
+                            title={plan.campus}
+                            description={`Fecha de Inicio: ${plan.start_date}`}
+                            interactive={true}
+                            id={plan.id}
+                        />
+                    ))
+                }
+                {
+                    plans && plans.map((plan, index) => (
+                        role == 'admin' && <ControlCard
                             key={index}
                             client:load
                             title={plan.campus}
