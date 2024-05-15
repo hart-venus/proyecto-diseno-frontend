@@ -109,6 +109,9 @@ function ControlPanelComponent() {
     const handleLogOut = () => {
         window.sessionStorage.removeItem('role')
         window.sessionStorage.removeItem('USER_ID')
+        window.sessionStorage.removeItem('PLAN_ID')
+        window.sessionStorage.removeItem('USER_CAMPUS')
+        window.sessionStorage.removeItem('USER_ROLE')
         window.location.href = 'login'
     }
 
