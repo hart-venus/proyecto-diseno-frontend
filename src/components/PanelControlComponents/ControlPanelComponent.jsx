@@ -16,6 +16,7 @@ function ControlPanelComponent() {
     const [guideTeam, setGuideTeam] = useState([])
     const [plans, setPlans] = useState([])
     const [role, setRole] = useState('')
+    const [campus,setCampus] = useState('')
 
     //Use Effect para obtener rol del usuario y saber que renderizar
     useEffect(() => {
@@ -36,6 +37,7 @@ function ControlPanelComponent() {
                 window.sessionStorage.setItem('USER_ROLE', newRole)
                 window.sessionStorage.setItem('USER_CAMPUS', newCampus)
                 setRole(newRole)
+                setCampus(newCampus)
                 console.log(role)
             })
             .catch((error) => {
@@ -120,7 +122,20 @@ function ControlPanelComponent() {
             <div className="grid grid-cols-3 gap-4">
                 {
                     guideTeam && guideTeam.map((member, index) => (
-                        member.status == "active" && (
+                        role != "admin" && campus == member.campus && member.status == "active" && (
+                            <ControlCard
+                                key={index}
+                                client:load
+                                title={member.full_name}
+                                description={member.coordinator ? "Coordinador" : "Profesor Guía"}
+                                interactive={false}
+                            />
+                        )
+                    ))
+                }
+                                {
+                    guideTeam && guideTeam.map((member, index) => (
+                        role == "admin" && member.status == "active" && (
                             <ControlCard
                                 key={index}
                                 client:load

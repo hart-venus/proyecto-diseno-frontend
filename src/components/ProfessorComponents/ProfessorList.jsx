@@ -143,7 +143,7 @@ function ProfessorList() {
                                     <span className="text-xl" style={{ color: 'red' }}>No</span> // Cross
                                 )}
                             </td>
-                            <td className="border border-slate-700 p-2">
+                            <td className="border border-slate-700 w-64">
                                 <button onClick={() => handleEdit(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-yellow-500 hover:bg-yellow-700">Editar</button>
                                 <button onClick={() => handleStatus(prof)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-red-600 hover:bg-red-800">Baja</button>
                                 {adminCampus && adminCampus === 'CA' && prof.coordinator == true && (

@@ -36,7 +36,7 @@ function PlanDetails() {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `${API_URL}/activities?work_plan_id=:${id}`,
+            url: `${API_URL}/activities?work_plan_id=${id}`,
             headers: {}
         };
 
