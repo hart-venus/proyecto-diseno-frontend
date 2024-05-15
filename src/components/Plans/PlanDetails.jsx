@@ -58,7 +58,8 @@ function PlanDetails() {
     }
 
     return (
-        <div className="max-h-80 overflow-y-auto">
+        <div>
+            <div className="max-h-80 overflow-y-auto">
             <table className="table-auto w-full border border-gray-200">
                 <thead>
                     <tr>
@@ -99,15 +100,17 @@ function PlanDetails() {
                     }
                 </tbody>
             </table>
+        </div>
             {userRole === "coord" && (
                 <div className="text-center mt-4">
                     <button onClick={handleNew} className="text-white rounded-lg border-4 border-transparent font-bold p-2 bg-blue-500 hover:bg-blue-700">Nueva Actividad</button>
                 </div>
             )}
             <div className="text-center mt-4">
-                <ReturnButton title={'Regresar'} page={'ControlPanel'} client:load/>
+                <ReturnButton title={'Regresar'} page={'ControlPanel'} client:load />
             </div>
         </div>
+
     );
 }
 
