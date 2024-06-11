@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import ReturnButton from "../ReturnButton";
+import EvidencesViewer from "../EvidencesViewer";
 
 function ActivityDetail() {
     const [planeada, setPlaneada] = useState(false);
@@ -28,6 +29,7 @@ function ActivityDetail() {
                     const newActivity = response.data;
                     setActivity(newActivity);
                     setPlaneada(newActivity.status === "PLANEADA");
+                    console.log(newActivity)
                 })
                 .catch((error) => {
                     console.log(error);
@@ -86,15 +88,13 @@ function ActivityDetail() {
                     <p className="text-left text-lg">Link: {activity.meeting_link}</p>
                 </span>
             )}
-            {/* Return button */}
-            <ReturnButton title={'Regresar'} page={`PlanActivities?id=${window.sessionStorage.getItem('PLAN_ID')}`} client:load />
 
             {/* Render comment section only if USER_ROLE is not admin */}
             {USER_ROLE !== "admin" && (
                 <div className="mt-8">
                     <h1 className="text-left text-2xl font-bold">Foro de Comentarios</h1>
                     {/* Display existing comments */}
-                    <div className=" mt-4 overflow-y-auto h-40">
+                    <div className=" mt-4 overflow-y-auto h-60">
                         {comments.map(comment => (
                             <div key={comment.id} className="border border-gray-300 rounded-lg p-4 mb-4">
                                 <p className="text-lg">{comment.content}</p>
@@ -117,6 +117,22 @@ function ActivityDetail() {
                     </form>
                 </div>
             )}
+
+            {/* Return button */}
+            <ReturnButton title={'Regresar'} page={`PlanActivities?id=${window.sessionStorage.getItem('PLAN_ID')}`} client:load />
+
+
+
+            {activity && activity.evidences && <h1 className="font-bold text-4xl">Evidencias</h1>}
+            <div className="grid grid-cols-3">
+                {
+                    activity && activity.evidences && activity.evidences.map((url) => (
+                        <EvidencesViewer imageUrl={url} />
+                    ))
+                }
+            </div>
+
+
         </div>
     );
 }

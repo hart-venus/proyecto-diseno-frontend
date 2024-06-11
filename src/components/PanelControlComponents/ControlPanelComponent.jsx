@@ -130,7 +130,9 @@ function ControlPanelComponent() {
                                 client:load
                                 title={member.full_name}
                                 description={member.coordinator ? "Coordinador" : "Profesor Guía"}
-                                interactive={false}
+                                interactive={true}
+                                tipo={'profe'}
+                                id={member.full_name}
                             />
                         )
                     ))
@@ -143,7 +145,9 @@ function ControlPanelComponent() {
                                 client:load
                                 title={member.full_name}
                                 description={member.coordinator ? "Coordinador" : "Profesor Guía"}
-                                interactive={false}
+                                interactive={true}
+                                tipo={'profe'}
+                                id={member.full_name}
                             />
                         )
                     ))
@@ -177,6 +181,7 @@ function ControlPanelComponent() {
                             description={`Fecha de Inicio: ${plan.start_date}`}
                             interactive={true}
                             id={plan.id}
+                            tipo={'Plan'}
                         />
                     ))
                 }
@@ -189,6 +194,7 @@ function ControlPanelComponent() {
                             description={`Fecha de Inicio: ${plan.start_date}`}
                             interactive={true}
                             id={plan.id}
+                            tipo={'Plan'}
                         />
                     ))
                 }

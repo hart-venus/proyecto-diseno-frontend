@@ -1,9 +1,11 @@
 
-function ControlCard({ title, description, interactive, id}) {
+function ControlCard({ title, description, interactive, id, tipo}) {
 
     const handleClick = () => {
-        if(interactive){
+        if(interactive && tipo =='Plan'){
             window.location.href = `PlanActivities?id=${encodeURIComponent(id)}`;
+        }else{
+            window.location.href = `ProfessorDetail?id=${encodeURIComponent(id)}`;
         }
     }
 
