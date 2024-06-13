@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import ErrorPopup from "../ErrorPopup";
@@ -171,7 +171,7 @@ function ProfessorList() {
                 }
             </tbody>
 
-            {error && <ErrorPopup setError={setError} errorMessage={'Ya existe un coordinador en este campus'} />}
+            {error && <ErrorPopup setError={setError} errorMessage={'Ya existe un coordinador'} />}
         </table>
 
     );
