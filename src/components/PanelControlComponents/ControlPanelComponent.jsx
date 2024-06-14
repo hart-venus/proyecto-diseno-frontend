@@ -5,10 +5,11 @@ import axios from "axios";
 import { API_URL } from "../../constants";
 
 const modules = [
-    { title: "Modificar Cuenta" },
+    { title: "Cuenta" },
     { title: "Estudiantes" },
     { title: "Agregar Plan" },
-    { title: "Profesores" }
+    { title: "Profesores" },
+    { title: "Buzón de notificaciones"},
 ];
 
 function ControlPanelComponent() {
@@ -116,15 +117,17 @@ function ControlPanelComponent() {
     }
 
     return (
-        <div className="w-3/4 bg-white rounded-lg shadow-md p-6">
+        <div className="w-3/4 bg-white rounded-lg shadow-md p-6 overflow-auto h-4/5">
             <h1 className="text-left text-3xl font-bold my-4">Panel de Control</h1>
-            <p className="text-left text-2xl font-bold my-4">
-                Resumen del Equipo Guia
-            </p>
+            {role !== 'student' && (
+                <p className="text-left text-lg font-bold my-4">
+                    Equipo de trabajo
+                </p>
+            )}
             <div className="grid grid-cols-3 gap-4">
                 {
                     guideTeam && guideTeam.map((member, index) => (
-                        role != "admin" && campus == member.campus && member.status == "active" && (
+                        role != "admin" && role != "student" && campus == member.campus && member.status == "active" && (
                             <ControlCard
                                 key={index}
                                 client:load

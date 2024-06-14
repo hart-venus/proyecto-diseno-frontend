@@ -24,12 +24,10 @@ function PlanDetails() {
     }
 
     const handleNew = () => {
-        // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
         window.location.href = 'NewActivities';
     }
 
     const handleEdit = (activityId) => {
-        // Aquí puedes agregar la lógica para redirigir al usuario a la página de edición
         window.location.href = `EditActivities?id=${activityId}`;
     }
 
@@ -68,7 +66,7 @@ function PlanDetails() {
                         <th className="px-4 py-2 bg-gray-100 border border-gray-200">Tipo</th>
                         <th className="px-4 py-2 bg-gray-100 border border-gray-200">Nombre</th>
                         <th className="px-4 py-2 bg-gray-100 border border-gray-200">Ver</th>
-                        {userRole === "coordinadora" && (
+                        {userRole === "coord" && (
                             <>
                                 <th className="px-4 py-2 bg-gray-100 border border-gray-200"></th>
                                 <th className="px-4 py-2 bg-gray-100 border border-gray-200"></th>
@@ -79,6 +77,7 @@ function PlanDetails() {
                 <tbody>
                     {
                         plan.map((activity, index) => (
+                            userRole !== "student" || activity.status === 'NOTIFICADA' && (
                             <tr key={index}>
                                 <td className="px-4 py-2 border border-gray-200">{activity.week}</td>
                                 <td className="px-4 py-2 border border-gray-200">{activity.date}</td>
@@ -96,7 +95,7 @@ function PlanDetails() {
                                 )}
                                 
                             </tr>
-                        ))
+                        )))
                     }
                 </tbody>
             </table>

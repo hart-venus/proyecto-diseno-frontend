@@ -90,7 +90,7 @@ function ActivityDetail() {
             )}
 
             {/* Render comment section only if USER_ROLE is not admin */}
-            {USER_ROLE !== "admin" && (
+            {USER_ROLE !== "admin" && USER_ROLE !== "student" &&(
                 <div className="mt-8">
                     <h1 className="text-left text-2xl font-bold">Foro de Comentarios</h1>
                     {/* Display existing comments */}
