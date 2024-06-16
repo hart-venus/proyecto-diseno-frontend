@@ -14,7 +14,7 @@ function PersonalForm() {
   const [student, setStudent] = useState(null)
   const [photo, setPhoto] = useState(null);
 
-  //Setear el student id en caso de haberlo
+  //Setear el student id o profesor en caso de haberlo
   useEffect(() => {
     const newStudentId = window.sessionStorage.getItem("STUDENT_ID")
     if (newStudentId) {
@@ -101,12 +101,16 @@ function PersonalForm() {
         setSuccess(true);
         console.log('Personal data updated successfully:', response.data);
       } else if (student) {
+
         const response = await axios.put(
           `${API_URL}/students/${studentId}`,
           {
-            full_name: formData.name,
+            last_name1: formData.name.split(' ')[0],
+            last_name2: formData.name.split(' ')[1],
+            name1: formData.name.split(' ')[2],
+            name2: formData.name.split(' ')[3],
             email: formData.email,
-            phone : formData.phone
+            phone: formData.phone
           }
         );
         setSuccess(true);

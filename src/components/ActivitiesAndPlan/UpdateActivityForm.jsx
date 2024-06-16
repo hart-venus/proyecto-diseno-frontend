@@ -10,8 +10,8 @@ const UpdateActivityForm = () => {
     const [time, setTime] = useState('');
     const [name, setActName] = useState('');
     const [responsible, setResponsible] = useState('');
-    const [announcementDays, setAnnouncementDays] = useState(7); // Valor por defecto
-    const [remainder, setRemainder] = useState('');
+    const [publicationDays, setPublicationDays] = useState(7); // Valor por defecto
+    const [remainderFrequencyDays, setRemainderFrequencyDays] = useState('');
     const [link, setLink] = useState('');
     const [type, setType] = useState('');
     const [mode, setMode] = useState('Presencial'); // Valor por defecto
@@ -30,6 +30,7 @@ const UpdateActivityForm = () => {
         try {
             const response = await axios.get(`${API_URL}/activities/${activityId}`);
             setActivityData(response.data); // Almacena los datos de la actividad en el estado
+            console.log(response.data)
         } catch (error) {
             console.error('Error al obtener los datos de la actividad:', error);
         }
@@ -39,22 +40,32 @@ const UpdateActivityForm = () => {
         loadActivityData(); // Cargar datos de la actividad cuando el componente se monte
     }, []);
 
+    // Función para formatear la fecha
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     // Actualizar los estados con los datos de la actividad cuando estén disponibles
     useEffect(() => {
         if (activityData) {
-            const { week, date, time, name, responsible_ids, announcement_days, reminder_days, meeting_link, activity_type, is_remote, status, poster_url } = activityData;
+            const { week, realization_date, realization_time, name, responsible_ids, publication_days_before, reminder_frequency_days, meeting_link, activity_type, is_remote, status, poster_url } = activityData;
             setWeek(week);
-            setDate(date);
-            setTime(time);
+            setDate(formatDate(realization_date));
+            setTime(realization_time);
             setActName(name);
             setResponsible(responsible_ids[0]); // Supongo que solo hay un responsable en esta implementación
-            setAnnouncementDays(announcement_days);
-            setRemainder(reminder_days);
+            setPublicationDays(publication_days_before);
+            setRemainderFrequencyDays(reminder_frequency_days);
             setLink(meeting_link);
             setType(activity_type);
             setMode(is_remote ? 'Remota' : 'Presencial'); // Convertir booleano a string
             setStatus(status);
             // setPoster(poster_url); // Ajustar cuando manejes la carga del poster
+
         }
     }, [activityData]);
 
@@ -64,18 +75,6 @@ const UpdateActivityForm = () => {
         } else {
             // Muestra un mensaje o realiza alguna acción para informar al usuario que no se puede marcar como realizada una actividad planeada
             console.log('No se puede marcar como realizada una actividad planeada.');
-        }
-    };
-
-    // Función para notificar una actividad
-    const notifyActivity = async () => {
-        try {
-            await axios.patch(`${API_URL}/activities/${activityId}/notify`);
-            console.log('Actividad notificada exitosamente');
-            // Actualizar estado o realizar otras acciones según sea necesario
-        } catch (error) {
-            console.error('Error al notificar la actividad:', error);
-            // Manejar errores de solicitud
         }
     };
 
@@ -104,10 +103,11 @@ const UpdateActivityForm = () => {
             // Manejar errores de solicitud
         }
     };
+
     const handleShowCancelForm = () => {
         setShowCancelForm(true);
     };
-    
+
     const handleConfirmCancel = async () => {
         try {
             await cancelActivity(cancelReason); // Pasa el motivo de cancelación a la función de cancelación
@@ -137,31 +137,40 @@ const UpdateActivityForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Crear el objeto con los datos del formulario
-        const formData = {
-            id: activityId,
-            work_plan_id: workPlanId,
-            week,
-            date,
-            time,
-            name,
-            responsible_ids: [responsible],
-            announcement_days: announcementDays,
-            reminder_days: remainder,
-            meeting_link: link,
-            activity_type: type,
-            is_remote: mode === 'Remota' ? "true" : "false",
-            status,
-            poster_url: null // Ajustar esto cuando manejes la subida del poster
+        let data = JSON.stringify({
+            "work_plan_id": workPlanId,
+            "week": parseInt(week),
+            "activity_type": type,
+            "name": name,
+            "realization_date": date,
+            "realization_time": time,
+            "responsible_ids": [
+                responsible
+            ],
+            "publication_days_before": parseInt(publicationDays),
+            "reminder_frequency_days": parseInt(remainderFrequencyDays),
+            "is_remote": mode === 'Remota' ? true : false,
+            "meeting_link": "",
+            "poster_url": null //Despues implementamos
+        });
+
+        let config = {
+            method: 'put',
+            maxBodyLength: Infinity,
+            url: `${API_URL}/activities/${activityId}`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: data
         };
 
-        try {
-            // Enviar los datos al endpoint PUT usando Axios
-            const response = await axios.put(`${API_URL}/activities/${activityId}`, formData);
-            console.log(response.data); // Manejar la respuesta según sea necesario
-        } catch (error) {
-            console.error('Error al enviar los datos:', error);
-            // Manejar errores de solicitud
-        }
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     // Para setear a la página que debe viajar
@@ -176,169 +185,171 @@ const UpdateActivityForm = () => {
             {activityData ? (
                 <div>
                     <form onSubmit={handleSubmit} className="w-full">
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={week}
-                            onChange={(e) => setWeek(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            placeholder="Semana"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setActName(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            placeholder="Actividad"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={responsible}
-                            onChange={(e) => setResponsible(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            placeholder="Responsable"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="number"
-                            value={announcementDays}
-                            onChange={(e) => setAnnouncementDays(parseInt(e.target.value))}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            placeholder="Días de anuncio"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="number"
-                            value={remainder}
-                            onChange={(e) => setRemainder(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            placeholder="Recordatorio (días)"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <input
-                            type="text"
-                            value={link}
-                            onChange={(e) => setLink(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            placeholder="Enlace a reunión"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <select
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            required
-                        >
-                            <option value="">Seleccionar tipo de actividad</option>
-                            <option value="Orientadoras">Orientadoras</option>
-                            <option value="Motivacionales">Motivacionales</option>
-                            <option value="De apoyo a la vida estudiantil">De apoyo a la vida estudiantil</option>
-                            <option value="De orden técnico">De orden técnico</option>
-                            <option value="De recreación">De recreación</option>
-                        </select>
-                    </div>
-                    <div className="mb-4">
-                        <select
-                            value={mode}
-                            onChange={(e) => setMode(e.target.value)}
-                            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                            required
-                        >
-                            <option value="Presencial">Presencial</option>
-                            <option value="Remota">Remota</option>
-                        </select>
-                    </div>
-                    <div id="poster" className="mb-4">
-                        <label htmlFor="photoInput" className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
-                            Subir poster
-                        </label>
-                        <input id="photoInput" type="file" accept="image/*" className="hidden" />
-                    </div>
-                    <input
-                        type="submit"
-                        value="Guardar"
-                        className="w-1/5 m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    />
-                </form>
-                    <div>
-                    {/* Formulario y otros elementos omitidos para mayor claridad... */}
-                    
-                    <div>
-                        <div className="justify-center mb-4">
-                            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                                Acciones de actividad
-                            </h1>
-                            <button onClick={notifyActivity} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-2 rounded mr-2">Notificar actividad</button>
-                            <button onClick={handleShowEvidenceForm} className="bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded mr-2">Marcar como realizada</button>
-                            <button onClick={handleShowCancelForm} className="bg-red-500 hover:bg-red-700 text-white py-2 px-2 rounded">Cancelar actividad</button>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={week}
+                                onChange={(e) => setWeek(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                placeholder="Semana"
+                                required
+                            />
                         </div>
-                        {/* Mostrar el formulario de subir evidencia solo si showEvidenceForm es true */}
-                        {showEvidenceForm && (
-                            <div className="mb-4">
-                                <label htmlFor="evidenceInput" className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
-                                    Subir evidencia
-                                </label>
-                                <input 
-                                    id="evidenceInput" 
-                                    type="file" 
-                                    accept="image/*" // Solo acepta archivos de imagen
-                                    onChange={(e) => setEvidence(e.target.files)} // Maneja el cambio de archivos seleccionados
-                                    className="hidden" 
-                                    multiple // Permite seleccionar múltiples archivos
-                                />
-                                <button onClick={markActivityAsDone} className="bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded-md mx-2 mt-2">Confirmar</button>
+                        <div className="mb-4">
+                            <select
+                                value={type}
+                                onChange={(e) => setType(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                required
+                            >
+                                <option value="">Seleccionar tipo de actividad</option>
+                                <option value="Orientadoras">Orientadoras</option>
+                                <option value="Motivacionales">Motivacionales</option>
+                                <option value="De apoyo a la vida estudiantil">De apoyo a la vida estudiantil</option>
+                                <option value="De orden técnico">De orden técnico</option>
+                                <option value="De recreación">De recreación</option>
+                            </select>
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setActName(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                placeholder="Actividad"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="time"
+                                value={time}
+                                onChange={(e) => setTime(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={responsible}
+                                onChange={(e) => setResponsible(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                placeholder="Responsable"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="number"
+                                value={publicationDays}
+                                onChange={(e) => setPublicationDays(parseInt(e.target.value))}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                placeholder="Notificada (En cuantos dias se notificara)"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="number"
+                                value={remainderFrequencyDays}
+                                onChange={(e) => setRemainderFrequencyDays(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                placeholder="Recordatorio (días)"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="text"
+                                value={link}
+                                onChange={(e) => setLink(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                placeholder="Enlace a reunión"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <select
+                                value={mode}
+                                onChange={(e) => setMode(e.target.value)}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                required
+                            >
+                                <option value="Presencial">Presencial</option>
+                                <option value="Remota">Remota</option>
+                            </select>
+                        </div>
+                        <div id="poster" className="mb-4">
+                            <label htmlFor="photoInput" className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
+                                Subir poster
+                            </label>
+                            <input id="photoInput" type="file" accept="image/*" className="hidden" />
+                        </div>
+                        <div className="mb-4">
+                            <input
+                                type="submit"
+                                value="Guardar"
+                                className="w-1/5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            />
+                        </div>
+
+                    </form>
+                    <div>
+                        {/* Formulario y otros elementos omitidos para mayor claridad... */}
+
+                        <div>
+                            <div className="justify-center mb-4">
+                                <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                                    Acciones de actividad
+                                </h1>
+                                <button onClick={handleShowEvidenceForm} className="bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded mr-2">Marcar como realizada</button>
+                                <button onClick={handleShowCancelForm} className="bg-red-500 hover:bg-red-700 text-white py-2 px-2 rounded">Cancelar actividad</button>
                             </div>
-                        )}
-                        {showCancelForm && (
-                            <div className="mb-4">
-                                <textarea
-                                    value={cancelReason}
-                                    onChange={(e) => setCancelReason(e.target.value)}
-                                    className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
-                                    placeholder="Motivo de cancelación"
-                                    required
-                                />
-                                <button onClick={handleConfirmCancel} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-2 rounded mt-2">Confirmar</button>
-                            </div>
-                        )}
-                        <ReturnButton title={'Regresar'} page={`PlanActivities?id=${page}`} client:load />
+                            {/* Mostrar el formulario de subir evidencia solo si showEvidenceForm es true */}
+                            {showEvidenceForm && (
+                                <div className="mb-4">
+                                    <label htmlFor="evidenceInput" className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
+                                        Subir evidencia
+                                    </label>
+                                    <input
+                                        id="evidenceInput"
+                                        type="file"
+                                        accept="image/*" // Solo acepta archivos de imagen
+                                        onChange={(e) => setEvidence(e.target.files)} // Maneja el cambio de archivos seleccionados
+                                        className="hidden"
+                                        multiple // Permite seleccionar múltiples archivos
+                                    />
+                                    <button onClick={markActivityAsDone} className="bg-green-500 hover:bg-green-700 text-white py-2 px-2 rounded-md mx-2 mt-2">Confirmar</button>
+                                </div>
+                            )}
+                            {showCancelForm && (
+                                <div className="mb-4">
+                                    <textarea
+                                        value={cancelReason}
+                                        onChange={(e) => setCancelReason(e.target.value)}
+                                        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-indigo-500"
+                                        placeholder="Motivo de cancelación"
+                                        required
+                                    />
+                                    <button onClick={handleConfirmCancel} className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-2 rounded mt-2">Confirmar</button>
+                                </div>
+                            )}
+                            <ReturnButton title={'Regresar'} page={`PlanActivities?id=${page}`} client:load />
+                        </div>
                     </div>
                 </div>
-                </div>
-                
-) : (
+
+            ) : (
                 <p>Cargando datos de la actividad...</p>
             )}
         </>

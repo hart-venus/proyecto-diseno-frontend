@@ -70,6 +70,15 @@ function ActivityDetail() {
             });
     };
 
+    // Función para formatear la fecha
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     return (
         <div>
             {/* Activity details */}
@@ -79,10 +88,10 @@ function ActivityDetail() {
             {/* Display other activity details */}
             <h1 className="text-left text-2xl font-bold mt-4">{activity && activity.name}</h1>
             <p className="text-left text-lg">Tipo: {activity && activity.activity_type}</p>
-            <p className="text-left text-lg">Fecha: {activity && activity.date}</p>
-            <p className="text-left text-lg">Hora: {activity && activity.time}</p>
-            {activity && activity.is_remote === 'false' && <p className="text-left text-lg">Presencial</p>}
-            {activity && activity.is_remote === 'true' && (
+            <p className="text-left text-lg">Fecha: {activity && formatDate(activity.realization_date)}</p>
+            <p className="text-left text-lg">Hora: {activity && activity.realization_time}</p>
+            {activity && activity.is_remote === false && <p className="text-left text-lg">Presencial</p>}
+            {activity && activity.is_remote === true && (
                 <span>
                     <p className="text-left text-lg">Remota</p>
                     <p className="text-left text-lg">Link: {activity.meeting_link}</p>
@@ -90,7 +99,7 @@ function ActivityDetail() {
             )}
 
             {/* Render comment section only if USER_ROLE is not admin */}
-            {USER_ROLE !== "admin" && USER_ROLE !== "student" &&(
+            {USER_ROLE !== "admin" && USER_ROLE !== "student" && (
                 <div className="mt-8">
                     <h1 className="text-left text-2xl font-bold">Foro de Comentarios</h1>
                     {/* Display existing comments */}
@@ -123,14 +132,14 @@ function ActivityDetail() {
 
 
 
-            {activity && activity.evidences && <h1 className="font-bold text-4xl">Evidencias</h1>}
+            {/* {activity && activity.evidences && <h1 className="font-bold text-4xl">Evidencias</h1>}
             <div className="grid grid-cols-3">
                 {
                     activity && activity.evidences && activity.evidences.map((url) => (
                         <EvidencesViewer imageUrl={url} />
                     ))
                 }
-            </div>
+            </div> */}
 
 
         </div>

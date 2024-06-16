@@ -135,7 +135,7 @@ function ControlPanelComponent() {
                                 description={member.coordinator ? "Coordinador" : "Profesor Guía"}
                                 interactive={true}
                                 tipo={'profe'}
-                                id={member.full_name}
+                                id={member.code}
                             />
                         )
                     ))
@@ -150,7 +150,7 @@ function ControlPanelComponent() {
                                 description={member.coordinator ? "Coordinador" : "Profesor Guía"}
                                 interactive={true}
                                 tipo={'profe'}
-                                id={member.full_name}
+                                id={member.code}
                             />
                         )
                     ))

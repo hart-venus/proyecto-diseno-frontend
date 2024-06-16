@@ -32,6 +32,7 @@ function PlanDetails() {
     }
 
     useEffect(() => {
+        console.log(id)
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
@@ -77,7 +78,7 @@ function PlanDetails() {
                 <tbody>
                     {
                         plan.map((activity, index) => (
-                            userRole !== "student" || activity.status === 'NOTIFICADA' && (
+                            activity.status === 'NOTIFICADA' && (
                             <tr key={index}>
                                 <td className="px-4 py-2 border border-gray-200">{activity.week}</td>
                                 <td className="px-4 py-2 border border-gray-200">{activity.date}</td>
