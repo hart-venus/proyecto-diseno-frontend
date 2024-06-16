@@ -1,0 +1,20 @@
+---
+import NotificationsComponent from "../components/NotificationsComponent"
+import AuthenticationChecker from "../components/Authentication"
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+</head>
+<body class="flex justify-center items-center h-screen bg-slate-100">
+    <div class="w-1/2 bg-white rounded-lg shadow-md p-6 mt-16">
+        <h1 class="text-left text-3xl font-bold my-4">Notificaciones</h1>
+        <NotificationsComponent client:only="react"/>
+    </div>
+</body>
+</html>
+<AuthenticationChecker client:only="react"/>

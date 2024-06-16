@@ -9,7 +9,7 @@ function ControlButton({ title, role }) {
         } else if (title === 'Estudiantes' && role !== 'student') {
             window.location.href = 'StudentList';
         } else if (title === 'Buzón de notificaciones' && role === 'student') {
-            window.location.href = 'StudentList';
+            window.location.href = 'Notifications';
         }
     };
 
