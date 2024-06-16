@@ -39,7 +39,6 @@ function ControlPanelComponent() {
                 window.sessionStorage.setItem('USER_CAMPUS', newCampus)
                 setRole(newRole)
                 setCampus(newCampus)
-                console.log(role)
             })
             .catch((error) => {
                 console.log(error.response);
@@ -113,6 +112,7 @@ function ControlPanelComponent() {
         window.sessionStorage.removeItem('PLAN_ID')
         window.sessionStorage.removeItem('USER_CAMPUS')
         window.sessionStorage.removeItem('USER_ROLE')
+        window.sessionStorage.removeItem('STUDENT_ID')
         window.location.href = 'login'
     }
 

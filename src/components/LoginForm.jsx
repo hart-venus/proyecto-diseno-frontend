@@ -44,6 +44,11 @@ function LoginForm() {
       .then((response) => {
         const userId = response.data.user_id;
         window.sessionStorage.setItem('USER_ID', userId); //Guardar en local storage el id del usuario
+        if (response.data.student_id){
+          const student_id = response.data.student_id
+          window.sessionStorage.setItem('STUDENT_ID', student_id);
+        }
+          
         window.location.href = 'ControlPanel'; //Navegar a la nueva ventana
         fetchPersonalData();
       })
