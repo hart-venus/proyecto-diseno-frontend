@@ -126,6 +126,7 @@ const UpdateActivityForm = () => {
                 cancel_reason: cancelReason // Proporcionar la razón de cancelación
             });
             console.log('Actividad cancelada exitosamente');
+            window.location.href = `PlanActivities?id=${workPlanId}`
             // Actualizar estado o realizar otras acciones según sea necesario
         } catch (error) {
             console.error('Error al cancelar la actividad:', error);
@@ -167,6 +168,7 @@ const UpdateActivityForm = () => {
         axios.request(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
+                window.location.href = `PlanActivities?id=${workPlanId}`
             })
             .catch((error) => {
                 console.log(error);

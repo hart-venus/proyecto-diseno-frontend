@@ -124,7 +124,7 @@ function ControlPanelComponent() {
                     Equipo de trabajo
                 </p>
             )}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 gap-4">
                 {
                     guideTeam && guideTeam.map((member, index) => (
                         role != "admin" && role != "student" && campus == member.campus && member.status == "active" && (
