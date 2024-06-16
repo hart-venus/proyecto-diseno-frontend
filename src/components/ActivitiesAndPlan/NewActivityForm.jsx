@@ -36,7 +36,7 @@ const NewActivityForm = () => {
             "reminder_frequency_days": parseInt(remainderFrequencyDays),
             "is_remote": mode === 'Remota' ? true : false,
             "meeting_link": "",
-            "poster_url": null
+            "poster_url": photo
         });
 
         let config = {
