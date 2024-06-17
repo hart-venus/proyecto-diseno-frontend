@@ -85,8 +85,8 @@ function PlanDetails() {
                     </thead>
                     <tbody>
                         {
-                            plan.map((activity, index) => (
-                                activity.status !== 'CANCELADA' && (
+                            plan.sort((a, b) => new Date(a.realization_date) - new Date(b.realization_date)).map((activity, index) => (
+                                activity.status === 'NOTIFICADA' && (
                                     <tr key={index}>
                                         <td className="px-4 py-2 border border-gray-200">{activity.week}</td>
                                         <td className="px-4 py-2 border border-gray-200">{formatDate(activity.realization_date)}</td>
@@ -95,7 +95,7 @@ function PlanDetails() {
                                         <td className="px-4 py-2 border border-gray-200">
                                             <button onClick={() => handleActivity(activity)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-green-500 hover:bg-green-700">Ver</button>
                                         </td>
-                                        {userRole === "coord" && activity.status !== 'REALIZADA' && (
+                                        {userRole === "coord" && (
                                             <>
                                                 <td className="px-4 py-2 border border-gray-200">
                                                     <button onClick={() => handleEdit(activity.id)} className="size-auto ms-2 text-white rounded-lg border-4 border-transparent font-bold p-1 bg-yellow-500 hover:bg-yellow-700">Editar</button>
