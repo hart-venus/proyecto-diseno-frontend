@@ -12,7 +12,7 @@ const NewActivityForm = () => {
     const [responsible, setResponsible] = useState('');
     const [publicationDays, setPublicationDays] = useState(null); // Valor por defecto
     const [remainderFrequencyDays, setRemainderFrequencyDays] = useState('');
-    const [link, setLink] = useState('');
+    const [link, setLink] = useState("");
     const [type, setType] = useState('');
     const [mode, setMode] = useState('Presencial'); // Valor por defecto
     const [poster, setPoster] = useState(null); // Para el poster, usaremos un estado de archivo
@@ -35,7 +35,7 @@ const NewActivityForm = () => {
             "publication_days_before": parseInt(publicationDays),
             "reminder_frequency_days": parseInt(remainderFrequencyDays),
             "is_remote": mode === 'Remota' ? true : false,
-            "meeting_link": "",
+            "meeting_link": link,
             "poster_url": photo
         });
 
@@ -52,6 +52,7 @@ const NewActivityForm = () => {
         axios.request(config)
             .then((response) => {
                 console.log(JSON.stringify(response.data));
+                window.location.href = `PlanActivities?id=${workPlanId}`
             })
             .catch((error) => {
                 console.log(error);

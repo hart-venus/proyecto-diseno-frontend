@@ -151,7 +151,7 @@ const UpdateActivityForm = () => {
             "publication_days_before": parseInt(publicationDays),
             "reminder_frequency_days": parseInt(remainderFrequencyDays),
             "is_remote": mode === 'Remota' ? true : false,
-            "meeting_link": "",
+            "meeting_link": link,
             "poster_url": null //Despues implementamos
         });
 

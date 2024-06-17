@@ -17,18 +17,14 @@ function AddPlanComponent() {
 
         const userId = window.sessionStorage.getItem('USER_ID');
 
-        // Formatear las fechas al formato "aaaa/mm/dd"
-        const formattedStartDate = workPlan.start_date.split('-').reverse().join('/');
-        const formattedEndDate = workPlan.end_date.split('-').reverse().join('/');
-
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         const raw = JSON.stringify({
             "user_id": userId,
             "work_plan": {
-                "start_date": formattedStartDate,
-                "end_date": formattedEndDate,
+                "start_date": workPlan.start_date,
+                "end_date": workPlan.end_date,
                 "campus": workPlan.campus,
                 "active": isActive
             }
