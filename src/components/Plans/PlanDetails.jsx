@@ -86,7 +86,7 @@ function PlanDetails() {
                     <tbody>
                         {
                             plan.sort((a, b) => new Date(a.realization_date) - new Date(b.realization_date)).map((activity, index) => (
-                                activity.status === 'CANCELADA'  && (
+                                activity.status !== 'CANCELADA'  && (
                                     <tr key={index}>
                                         <td className="px-4 py-2 border border-gray-200">{activity.week}</td>
                                         <td className="px-4 py-2 border border-gray-200">{formatDate(activity.realization_date)}</td>
