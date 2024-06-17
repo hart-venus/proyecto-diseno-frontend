@@ -132,14 +132,14 @@ function ActivityDetail() {
 
 
 
-            {/* {activity && activity.evidences && <h1 className="font-bold text-4xl">Evidencias</h1>}
+            {activity && activity.evidences && <h1 className="font-bold text-4xl">Evidencias</h1>}
             <div className="grid grid-cols-3">
                 {
                     activity && activity.evidences && activity.evidences.map((url) => (
                         <EvidencesViewer imageUrl={url} />
                     ))
                 }
-            </div> */}
+            </div>
 
 
         </div>

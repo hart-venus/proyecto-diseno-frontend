@@ -24,6 +24,7 @@ const UpdateActivityForm = () => {
     const [showEvidenceForm, setShowEvidenceForm] = useState(false); // Estado para mostrar el formulario de subir evidencia
     const [cancelReason, setCancelReason] = useState('');
     const [showCancelForm, setShowCancelForm] = useState(false);
+    const [photo, setPhoto] = useState(null);
 
     // Función para cargar los datos de la actividad
     const loadActivityData = async () => {
@@ -91,7 +92,7 @@ const UpdateActivityForm = () => {
             } else {
                 throw new Error('Evidence files are required');
             }
-            const response = await axios.post(`${API_URL}/activities/${activityId}/done`, formData, {
+            const response = await axios.post(`${API_URL}/activities/${activityId}/mark_as_done`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -152,7 +153,7 @@ const UpdateActivityForm = () => {
             "reminder_frequency_days": parseInt(remainderFrequencyDays),
             "is_remote": mode === 'Remota' ? true : false,
             "meeting_link": link,
-            "poster_url": null //Despues implementamos
+            "poster_file": photo //Despues implementamos
         });
 
         let config = {
@@ -295,7 +296,7 @@ const UpdateActivityForm = () => {
                             <label htmlFor="photoInput" className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700">
                                 Subir poster
                             </label>
-                            <input id="photoInput" type="file" accept="image/*" className="hidden" />
+                            <input id="photoInput" type="file" accept="image/*" className="hidden" onChange={(e) => setPhoto(e.target.files[0])} />
                         </div>
                         <div className="mb-4">
                             <input

@@ -55,7 +55,7 @@ function NotificationComponent() {
         // let config = {
         //     method: 'put',
         //     maxBodyLength: Infinity,
-        //     url: `${API_URL}/student_inbox/${student.carne}/notifications/${id}{/mark_as_read`,
+        //     url: `${API_URL}/student_inbox/${student.carne}/notifications/${id}/mark_as_read`,
         //     headers: {}
         // };
 
