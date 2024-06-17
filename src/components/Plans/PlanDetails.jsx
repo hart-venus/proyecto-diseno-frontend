@@ -85,7 +85,7 @@ function PlanDetails() {
                     </thead>
                     <tbody>
                         {
-                            plan.map((activity, index) => (
+                            plan.sort((a, b) => new Date(a.realization_date) - new Date(b.realization_date)).map((activity, index) => (
                                 activity.status === 'NOTIFICADA' && (
                                     <tr key={index}>
                                         <td className="px-4 py-2 border border-gray-200">{activity.week}</td>

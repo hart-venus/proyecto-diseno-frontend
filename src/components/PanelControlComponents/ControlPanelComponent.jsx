@@ -18,6 +18,7 @@ function ControlPanelComponent() {
     const [plans, setPlans] = useState([])
     const [role, setRole] = useState('')
     const [campus, setCampus] = useState('')
+    const [plan, setPlan] = useState(null);
 
     //Use Effect para obtener rol del usuario y saber que renderizar
     useEffect(() => {
@@ -175,7 +176,7 @@ function ControlPanelComponent() {
 
             <div className="grid grid-cols-3 gap-4">
                 {
-                    plans && plans.map((plan, index) => (
+                    plans && [...plans].sort((a, b) => new Date(a.start_date) - new Date(b.start_date)).map((plan, index) => (
                         role != 'admin' && plan.campus == campus &&
                         <ControlCard
                             key={index}
@@ -201,6 +202,7 @@ function ControlPanelComponent() {
                         />
                     ))
                 }
+
             </div>
             <button onClick={handleLogOut}
                 className="text-white w-48 mt-4 rounded-lg border-4 border-transparent font-bold p-1 bg-red-500 hover:bg-red-700">
