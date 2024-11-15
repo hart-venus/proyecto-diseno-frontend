@@ -1,3 +1,3 @@
-const API_URL = 'https://backend-soltec-d7ad45d6bd08.herokuapp.com/'
+const API_URL = 'https://soltec-qa-060f9f54c203.herokuapp.com'
 
 export { API_URL };

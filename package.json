@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "astro": "astro"
   },
-  "proxy": "https://backend-soltec-d7ad45d6bd08.herokuapp.com/",
+  "proxy": "https://soltec-qa-060f9f54c203.herokuapp.com",
   "dependencies": {
     "@astrojs/check": "^0.5.10",
     "@astrojs/react": "^3.3.1",
